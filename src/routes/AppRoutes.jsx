@@ -4,6 +4,7 @@ import { AdminLoginScreen } from '../pages/LoginPage';
 import { DashboardLayout } from '../components/DashboardLayout';
 import { Dashboard } from '../pages/Dashboard';
 import { Notifications } from '../pages/Notifications';
+import { AllHubs } from '../pages/hub/AllHub';
 
 export const AppRoutes = () => {
   return (
@@ -20,7 +21,15 @@ export const AppRoutes = () => {
         {/* Notifications */}
         <Route path="notifications" element={<Notifications />} />
         
-        
+        {/* Hubs Routes */}
+        <Route path="hubs">
+          <Route index element={<Navigate to="/hubs/all-hubs" replace />} />
+          <Route path="all-hubs" element={<AllHubs />} />
+          {/* <Route path="add-hub-zone" element={<AddHubZone />} />
+          <Route path="add-hub-manager" element={<AddHubManager />} />
+          <Route path="hub-performance" element={<HubPerformance />} />
+          <Route path="hub-zone" element={<HubZone />} /> */}
+        </Route>
      
     
       </Route>

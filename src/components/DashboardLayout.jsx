@@ -445,27 +445,7 @@ export const DashboardLayout = () => {
               <h1 className="text-lg font-semibold" style={{ color: Colors.textBlack }}>
                 {pageTitle}
               </h1>
-            </div>
-
-            {/* Right side */}
-            <div className="flex items-center gap-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/notifications')}
-                className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Bell size={20} style={{ color: Colors.textGrey1 }} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </motion.button>
-              
-              <div 
-                className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center cursor-pointer"
-                onClick={() => navigate('/profile')}
-              >
-                <User size={16} style={{ color: Colors.primaryGreen }} />
-              </div>
-            </div>
+            </div>          
           </div>
         </header>
 

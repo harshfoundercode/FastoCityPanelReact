@@ -1,49 +1,59 @@
 // src/components/ProfileDrawer.jsx
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
-  User,
-  Mail,
   Phone,
+  Mail,
   MapPin,
   CreditCard,
   FileText,
-  Shield,
-  Camera,
-  Edit,
   CheckCircle,
-  Circle,
-} from 'lucide-react';
+  RefreshCcw,
+} from "lucide-react";
 
-// Color constants matching Flutter
-const Colors = {
-  primaryGreen: '#14532D',
-  primaryLightGreen: '#4ADE80',
-  primaryExtraLightGreen: '#F0FDF4',
-  textBlack: '#1F2937',
-  textGrey1: '#6B7280',
-  containerGrey2: '#F3F4F6',
-  white: '#FFFFFF',
-};
-
-// Mock profile data matching the API response
 const mockProfileData = {
-  id: 1,
-  cityzoneid: 1,
   name: "Tanisha",
   phone: "9555602291",
   email: "tanisha@gmail.com",
   address: "lucknow",
   adharno: "123654789014",
   panno: "ABCDE1234F",
-  img: "",
-  status: 1
+  status: 1,
 };
 
 export const ProfileDrawer = ({ isOpen, onClose }) => {
-  // In real app, fetch this data from API
   const profileData = mockProfileData;
+
+  const InfoCard = ({ icon, title, value, verified }) => (
+    <div className="bg-white rounded-2xl border border-gray-100 p-3 shadow-sm">
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3 items-center">
+          {/* Icon */}
+          <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center shrink-0">
+            {icon}
+          </div>
+
+          {/* Content */}
+          <div className="min-w-0">
+            <p className="text-xs text-gray-400 font-medium">{title}</p>
+
+            <p className="text-sm font-semibold text-gray-800 mt-0.5 break-all">
+              {value}
+            </p>
+          </div>
+        </div>
+
+        {/* Verified */}
+        {verified && (
+          <div className="bg-green-100 text-green-700 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+            Verified
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <AnimatePresence>
@@ -54,267 +64,187 @@ export const ProfileDrawer = ({ isOpen, onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/50 z-50"
             onClick={onClose}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
           />
 
           {/* Drawer */}
           <motion.div
-            initial={{ x: '100%' }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ 
-              type: 'spring', 
-              damping: 30, 
-              stiffness: 300 
+            exit={{ x: "100%" }}
+            transition={{
+              type: "spring",
+              damping: 28,
+              stiffness: 280,
             }}
-            className="fixed right-0 top-0 h-full z-50 bg-white shadow-2xl"
-            style={{ 
-              width: '100%',
-              maxWidth: '420px',
+            className="fixed right-0 top-0 h-full bg-[#F8FAFC] z-[999] shadow-2xl overflow-hidden"
+            style={{
+              width: "100%",
+              maxWidth: "420px",
             }}
           >
-            {/* Drawer Content */}
-            <div className="h-full flex flex-col overflow-y-auto">
-              {/* Header with Close Button */}
-              <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-100">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-                    Profile Details
-                  </h2>
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+            <div className="h-full overflow-y-auto">
+              {/* HEADER */}
+              <div className="relative z-10 bg-gradient-to-br from-[#166534] to-[#14532D] px-5 pt-6 pb-6 overflow-hidden">
+                {/* Decorative Circles */}
+                <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-white/5 pointer-events-none" />
+                <div className="absolute top-10 right-16 w-24 h-24 rounded-full bg-white/5 pointer-events-none" />
+
+                {/* Close Button */}
+                <div className="flex justify-end relative z-[9999]">
+                  <button
                     onClick={onClose}
-                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="text-white hover:scale-110 duration-200 cursor-pointer"
                   >
-                    <X size={20} style={{ color: Colors.textGrey1 }} />
-                  </motion.button>
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Profile */}
+                <div className="flex items-center gap-4 mt-3 relative z-10">
+                  {/* Avatar */}
+                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-[#166534] text-3xl font-bold shadow-lg">
+                    {profileData.name.charAt(0)}
+                  </div>
+
+                  {/* User Info */}
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">
+                      {profileData.name}
+                    </h2>
+
+                    <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full bg-white/20 backdrop-blur-md">
+                      <span className="text-white text-xs font-semibold">
+                        City Manager
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Profile Content */}
-              <div className="flex-1 px-6 py-6">
-                {/* Profile Image Section */}
-                <div className="flex flex-col items-center mb-8">
-                  <div className="relative">
-                    <div
-                      className="w-24 h-24 rounded-full flex items-center justify-center mb-3"
-                      style={{ 
-                        backgroundColor: Colors.primaryExtraLightGreen,
-                        border: `3px solid ${Colors.primaryGreen}`,
-                      }}
-                    >
-                      {profileData.img ? (
-                        <img
-                          src={profileData.img}
-                          alt={profileData.name}
-                          className="w-full h-full rounded-full object-cover"
+              {/* BODY */}
+              <div className="px-4 py-4 space-y-5">
+                {/* Active Card */}
+                <div className="bg-[#EAFBF1] border border-[#86EFAC] rounded-xl px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+
+                    <p className="font-semibold text-green-800 text-sm">
+                      Account is Active
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-green-700 text-xs font-medium">
+                    Verified
+                    <CheckCircle size={14} />
+                  </div>
+                </div>
+
+                {/* CONTACT INFO */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-5 rounded-full bg-green-700" />
+
+                    <h3 className="text-lg font-bold text-gray-800">
+                      Contact Information
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    <InfoCard
+                      icon={<Phone size={18} className="text-sky-500" />}
+                      title="Phone"
+                      value={profileData.phone}
+                    />
+
+                    <InfoCard
+                      icon={<Mail size={18} className="text-violet-500" />}
+                      title="Email"
+                      value={profileData.email}
+                    />
+
+                    <InfoCard
+                      icon={<MapPin size={18} className="text-orange-500" />}
+                      title="Address"
+                      value={profileData.address}
+                    />
+                  </div>
+                </div>
+
+                {/* DOCUMENTS */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-5 rounded-full bg-green-700" />
+
+                    <h3 className="text-lg font-bold text-gray-800">
+                      Documents
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    <InfoCard
+                      icon={
+                        <CreditCard
+                          size={18}
+                          className="text-orange-500"
                         />
-                      ) : (
-                        <User size={40} style={{ color: Colors.primaryGreen }} />
-                      )}
-                    </div>
-                    
-                    {/* Edit Photo Button */}
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="absolute bottom-2 right-0 w-8 h-8 rounded-full flex items-center justify-center shadow-md"
-                      style={{ 
-                        backgroundColor: Colors.primaryGreen,
-                        border: '2px solid white',
-                      }}
-                    >
-                      <Camera size={14} color="white" />
-                    </motion.button>
-                  </div>
-                  
-                  <h3 
-                    className="text-xl font-bold mt-3"
-                    style={{ color: Colors.textBlack }}
-                  >
-                    {profileData.name}
-                  </h3>
-                  
-                  {/* Status Badge */}
-                  <div className="flex items-center gap-2 mt-2">
-                    <span
-                      className="px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1"
-                      style={{
-                        backgroundColor: profileData.status === 1 
-                          ? Colors.primaryExtraLightGreen 
-                          : '#FEE2E2',
-                        color: profileData.status === 1 
-                          ? Colors.primaryGreen 
-                          : '#DC2626',
-                      }}
-                    >
-                      {profileData.status === 1 ? (
-                        <CheckCircle size={12} />
-                      ) : (
-                        <Circle size={12} />
-                      )}
-                      {profileData.status === 1 ? 'Active' : 'Inactive'}
-                    </span>
+                      }
+                      title="Aadhar Number"
+                      value="XXXX XXXX 9014"
+                      verified
+                    />
+
+                    <InfoCard
+                      icon={
+                        <FileText
+                          size={18}
+                          className="text-violet-500"
+                        />
+                      }
+                      title="PAN Number"
+                      value={profileData.panno}
+                      verified
+                    />
                   </div>
                 </div>
 
-                {/* Profile Information Cards */}
-                <div className="space-y-4">
-                  {/* Email */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <Mail size={18} style={{ color: Colors.primaryGreen }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          Email Address
-                        </p>
-                        <p className="text-sm font-medium mt-0.5" style={{ color: Colors.textBlack }}>
-                          {profileData.email}
-                        </p>
-                      </div>
-                    </div>
+                {/* ZONE DETAILS */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-5 rounded-full bg-green-700" />
+
+                    <h3 className="text-lg font-bold text-gray-800">
+                      Zone Details
+                    </h3>
                   </div>
 
-                  {/* Phone */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <Phone size={18} style={{ color: Colors.primaryGreen }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          Phone Number
+                  <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-gray-400 text-xs font-medium">
+                          Current Zone
                         </p>
-                        <p className="text-sm font-medium mt-0.5" style={{ color: Colors.textBlack }}>
-                          +91 {profileData.phone}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Address */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <MapPin size={18} style={{ color: Colors.primaryGreen }} />
+                        <h4 className="text-base font-bold text-gray-800 mt-1">
+                          Lucknow Zone
+                        </h4>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          Address
-                        </p>
-                        <p className="text-sm font-medium mt-0.5 capitalize" style={{ color: Colors.textBlack }}>
-                          {profileData.address}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Aadhar Number */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <CreditCard size={18} style={{ color: Colors.primaryGreen }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          Aadhar Number
-                        </p>
-                        <p className="text-sm font-medium mt-0.5" style={{ color: Colors.textBlack }}>
-                          {profileData.adharno.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3')}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* PAN Number */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <FileText size={18} style={{ color: Colors.primaryGreen }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          PAN Number
-                        </p>
-                        <p className="text-sm font-medium mt-0.5" style={{ color: Colors.textBlack }}>
-                          {profileData.panno}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* City Zone ID */}
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ backgroundColor: Colors.containerGrey2 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: Colors.primaryExtraLightGreen }}
-                      >
-                        <Shield size={18} style={{ color: Colors.primaryGreen }} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs" style={{ color: Colors.textGrey1 }}>
-                          City Zone ID
-                        </p>
-                        <p className="text-sm font-medium mt-0.5" style={{ color: Colors.textBlack }}>
-                          {profileData.cityzoneid}
-                        </p>
+                      <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                        <RefreshCcw
+                          size={18}
+                          className="text-green-700"
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Edit Profile Button */}
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl mt-6 font-medium"
-                  style={{
-                    backgroundColor: Colors.primaryGreen,
-                    color: 'white',
-                  }}
-                >
-                  <Edit size={18} />
+                {/* BUTTON */}
+                <button className="w-full mt-1 bg-[#166534] hover:bg-[#14532D] text-white rounded-xl py-3 text-sm font-semibold transition-all duration-300">
                   Edit Profile
-                </motion.button>
+                </button>
               </div>
             </div>
           </motion.div>

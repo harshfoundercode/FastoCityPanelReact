@@ -309,10 +309,7 @@ export const Notifications = () => {
               />
             </motion.button>
 
-            {/* Filter Button */}
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-              <Filter size={18} style={{ color: Colors.textGrey1 }} />
-            </button>
+           
           </div>
         </div>
       </div>
