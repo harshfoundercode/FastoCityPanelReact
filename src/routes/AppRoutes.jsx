@@ -53,6 +53,7 @@ import { HubOrders } from '../pages/hub/AllHubOrder';
 import { OrderDetails } from '../pages/hub/OrdersDetailsScreen';
 import { Orders } from '../pages/OrdersScreen';
 import { OrderProfileDetails } from '../pages/OrderProfileScreen';
+import { UrgentAddOnScreen } from '../pages/UrgentAddOnScreen';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -100,7 +101,13 @@ export const AppRoutes = () => {
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
+
+        //=============== NOTIFICATION SECTIONS =====================
+
         <Route path="notifications" element={<Notifications />} />
+
+        //=============== HUB SECTIONS =====================
+
         {/* Hubs Routes */}
         <Route path="hubs">
           <Route index element={<Navigate to="/hubs/all-hubs" replace />} />
@@ -118,6 +125,9 @@ export const AppRoutes = () => {
         //=============== order section separate =====================
         <Route path="orders" element={<Orders />} />
         <Route path="orders/:orderId/profile" element={<OrderProfileDetails />} />
+
+         //=============== urgent add on =====================
+        <Route path="inventory-addon" element={<UrgentAddOnScreen />} />
 
 
       </Route>

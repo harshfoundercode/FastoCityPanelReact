@@ -91,6 +91,9 @@ export const ENDPOINTS = {
   ALL_ORDERS: 'orders',
   ORDER_PROFILE: 'orderprofile', 
 
+  URGENT_MAIN_CATEGORIES: 'main-category-list',
+  URGENT_CATEGORIES_BY_MAIN: 'category-fulllist',
+  URGENT_ADD_ON_REQUEST: 'cityRequests',
 
 };
 
