@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { PremiumBg } from '../components/premiumBg';
+import { useLoginViewModel } from '../hooks/userLoginViewModel';
 import AppLogo from '../assets/app_logo.png';
 import toast from 'react-hot-toast';
 
@@ -19,9 +20,16 @@ const Colors = {
 export const AdminLoginScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  
+  // Use the login hook
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loginLoading,
+    loginApi,
+  } = useLoginViewModel();
   
   const navigate = useNavigate();
 
@@ -40,25 +48,9 @@ export const AdminLoginScreen = () => {
 
   const getScreenHeight = () => window.innerHeight;
 
-  // Simple static login function
+  // Handle login with API call
   const handleLogin = () => {
-    if (!email) {
-      toast.error('Please enter email');
-      return;
-    }
-    if (!password) {
-      toast.error('Please enter password');
-      return;
-    }
-    
-    // Show loading state
-    setIsLoading(true);
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success('Login successful!');
-      navigate('/');
-    }, 1500);
+    loginApi();
   };
 
   return (
@@ -197,7 +189,7 @@ export const AdminLoginScreen = () => {
             >
               <motion.button
                 onClick={handleLogin}
-                disabled={isLoading}
+                disabled={loginLoading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
@@ -205,14 +197,19 @@ export const AdminLoginScreen = () => {
                   width: '100%',
                   backgroundColor: Colors.primaryGreen,
                   borderRadius: '12px',
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
-                  opacity: isLoading ? 0.7 : 1,
+                  cursor: loginLoading ? 'not-allowed' : 'pointer',
+                  opacity: loginLoading ? 0.7 : 1,
                 }}
                 className="relative overflow-hidden group"
               >
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  {loginLoading ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span style={{ color: 'white', fontWeight: 600, fontSize: 14 }}>
+                        Logging in...
+                      </span>
+                    </div>
                   ) : (
                     <span 
                       style={{ 

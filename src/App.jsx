@@ -14,6 +14,18 @@ function App() {
             background: '#363636',
             color: '#fff',
           },
+          success: {
+            style: {
+              background: '#14532D',
+              color: '#fff',
+            },
+          },
+          error: {
+            style: {
+              background: '#DC2626',
+              color: '#fff',
+            },
+          },
         }}
       />
       <AppRoutes />
