@@ -111,7 +111,7 @@ export const ProductListPanel = () => { // ✅ Remove prop
                         e.stopPropagation();
                         stockVM.toggleProductSelection(productId);
                       }}
-                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                      className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${
                         isSelected ? 'bg-green-800 border-green-800' : 'border-gray-300'
                       }`}
                     >
@@ -119,7 +119,7 @@ export const ProductListPanel = () => { // ✅ Remove prop
                     </button>
 
                     {/* Image */}
-                    <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center overflow-hidden shrink-0">
                       {(product.img || product.productImg || product.product_img) ? (
                         <img
                           src={product.img || product.productImg || product.product_img}

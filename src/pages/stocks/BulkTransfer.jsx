@@ -206,7 +206,7 @@ export const BulkRequest = () => {
         <AppHeader title="Stock Transfer" subtitle="Admin request or Hub transfer" />
         <div className="flex-1 flex items-center justify-center">
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center max-w-md mx-4">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center mx-auto mb-5">
+            <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-green-100 to-green-50 flex items-center justify-center mx-auto mb-5">
               <Package size={36} className="text-green-800" />
             </div>
             <h2 className="text-lg font-bold text-gray-800 mb-2">No products selected</h2>
@@ -256,7 +256,7 @@ export const BulkRequest = () => {
                   <div key={productId} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     {/* Product Header */}
                     <div className="p-3 flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+                      <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center overflow-hidden shrink-0">
                         {(product.img || product.product_img) ? (
                           <img src={product.img || product.product_img} alt="" className="w-full h-full object-cover" />
                         ) : (
@@ -426,7 +426,7 @@ export const BulkRequest = () => {
             {/* Stock Error Banner */}
             {hasStockError && transferType === 'hub' && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2.5">
-                <AlertTriangle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
+                <AlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-xs font-extrabold text-red-600">Stock limit exceeded</p>
                   <p className="text-xs text-red-500 mt-0.5">
@@ -483,7 +483,7 @@ export const BulkRequest = () => {
             {/* Disabled reason */}
             {(isHubMissing || hasStockError) && (
               <div className="mb-3 p-2.5 bg-orange-50 border border-orange-200 rounded-lg flex items-center gap-2">
-                <AlertTriangle size={14} className="text-orange-500 flex-shrink-0" />
+                <AlertTriangle size={14} className="text-orange-500 shrink-0" />
                 <span className="text-xs font-semibold text-orange-600">
                   {isHubMissing ? 'Please select a hub first' : 'Some variants exceed stock limit'}
                 </span>

@@ -121,7 +121,7 @@ const SidebarContent = React.memo(({
               backgroundColor: Colors.primaryGreen,
               borderRadius: '12px',
             }}
-            className="flex items-center justify-center flex-shrink-0"
+            className="flex items-center justify-center shrink-0"
           >
             <img
               src={AppLogo}
@@ -182,7 +182,7 @@ const SidebarContent = React.memo(({
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="flex-shrink-0">{item.icon}</span>
+                    <span className="shrink-0">{item.icon}</span>
                     <span className="text-sm font-medium">{item.label}</span>
                   </div>
                   <motion.div
@@ -219,7 +219,7 @@ const SidebarContent = React.memo(({
                               fontWeight: isActive(subItem.path) ? 600 : 400,
                             }}
                           >
-                            <span className="flex-shrink-0">{subItem.icon}</span>
+                            <span className="shrink-0">{subItem.icon}</span>
                             <span>{subItem.label}</span>
                           </motion.button>
                         ))}
@@ -245,7 +245,7 @@ const SidebarContent = React.memo(({
                   fontWeight: isActive(item.path) ? 600 : 400,
                 }}
               >
-                <span className="flex-shrink-0">{item.icon}</span>
+                <span className="shrink-0">{item.icon}</span>
                 <span className="text-sm">{item.label}</span>
               </motion.button>
             )}
@@ -423,7 +423,7 @@ export const DashboardLayout = () => {
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
         {/* Top Bar - Fixed */}
         <header
-          className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 flex-shrink-0"
+          className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 shrink-0"
           style={{ height: 64 }}
         >
           <div className="flex items-center justify-between h-full">

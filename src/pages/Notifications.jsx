@@ -207,7 +207,7 @@ const NotificationTile = ({ item, formatDate, getNotificationIcon, getNotificati
     >
       <div className="flex items-start gap-3">
         {/* Indicator dot */}
-        <div className="mt-1.5 flex-shrink-0">
+        <div className="mt-1.5 shrink-0">
           <div
             className={`w-2.5 h-2.5 rounded-full ${
               isRead ? 'bg-gray-300' : 'bg-blue-500 shadow-sm shadow-blue-300'
@@ -217,7 +217,7 @@ const NotificationTile = ({ item, formatDate, getNotificationIcon, getNotificati
 
         {/* Icon */}
         <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
           style={{ backgroundColor: `${typeColor}15` }}
         >
           <span style={{ color: typeColor }}>{getNotificationIcon(item.type)}</span>
@@ -245,7 +245,7 @@ const NotificationTile = ({ item, formatDate, getNotificationIcon, getNotificati
 
         {/* Unread badge */}
         {!isRead && (
-          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-bold flex-shrink-0">
+          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-bold shrink-0">
             New
           </span>
         )}

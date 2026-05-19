@@ -281,7 +281,7 @@ const loadHubZones = async (cityzoneid) => {
         <div className="lg:col-span-1 space-y-6">
           
           {/* Hero Card with Avatar */}
-          <div className="bg-gradient-to-br from-[#14532D] to-[#166534] rounded-2xl p-6 shadow-lg">
+          <div className="bg-linear-to-br from-[#14532D] to-[#166534] rounded-2xl p-6 shadow-lg">
             <div className="flex flex-col items-center text-center">
               <button
                 onClick={() => setShowImagePicker(true)}

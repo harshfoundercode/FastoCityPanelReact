@@ -325,7 +325,7 @@ const TransferCard = ({ transfer, expanded, onToggle, onAccept, getStatusLabel, 
 const ProductItemCard = ({ item }) => (
   <div className="p-3.5 border-b border-gray-100 last:border-0">
     <div className="flex items-center gap-3 mb-3">
-      <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center overflow-hidden flex-shrink-0">
+      <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center overflow-hidden shrink-0">
         {(item.product_image || item.productImage) ? (
           <img src={item.product_image || item.productImage} alt="" className="w-full h-full object-cover" />
         ) : (

@@ -272,7 +272,7 @@ export const HubZone = () => {
                 <div className="absolute top-4 left-4 right-4 z-10">
                     <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 shadow-xl border border-gray-100">
                         <div className="flex items-center gap-4">
-                            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center shadow-sm">
+                            <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-green-50 to-green-100 flex items-center justify-center shadow-sm">
                                 <Building2 size={22} className="text-green-800" />
                             </div>
                             <div className="flex-1">
@@ -322,12 +322,12 @@ export const HubZone = () => {
                                                 onClick={() => onZoneTap(zone)}
                                                 className={`w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-gray-50 transition-colors ${isSelected ? 'bg-green-50' : ''}`}
                                             >
-                                                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+                                                <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: color }} />
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-bold text-gray-800 truncate">{zone.name}</p>
                                                     <p className="text-xs text-gray-400 truncate">{zone.address || 'No address'}</p>
                                                 </div>
-                                                <div className="flex items-center gap-2 flex-shrink-0">
+                                                <div className="flex items-center gap-2 shrink-0">
                                                     <span className="text-xs text-gray-500">{radius.toFixed(1)} km</span>
                                                     <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`} />
                                                 </div>
@@ -351,7 +351,7 @@ export const HubZone = () => {
                                     <button
                                         key={zone.id}
                                         onClick={() => onZoneTap(zone)}
-                                        className="flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap shadow-lg flex-shrink-0 transition-all hover:scale-105"
+                                        className="flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold whitespace-nowrap shadow-lg shrink-0 transition-all hover:scale-105"
                                         style={{
                                             backgroundColor: isSelected ? color : 'white',
                                             color: isSelected ? 'white' : '#1E293B',
@@ -394,7 +394,7 @@ export const HubZone = () => {
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
                         transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-                        className="bg-white rounded-t-3xl shadow-2xl px-5 pt-4 pb-8 flex-shrink-0 relative z-30 border-t border-gray-100"
+                        className="bg-white rounded-t-3xl shadow-2xl px-5 pt-4 pb-8 shrink-0 relative z-30 border-t border-gray-100"
                     >
                         <div className="flex justify-center mb-4">
                             <div className="w-10 h-1.5 bg-gray-300 rounded-full" />
@@ -473,7 +473,7 @@ const ZoneDetailSheet = ({ zone, zoneColor, onClose, onEdit }) => {
 
 const DetailCard = ({ icon, label, value, color, fullWidth }) => (
     <div className={`bg-gray-50 rounded-2xl p-3.5 flex items-start gap-3 border border-gray-100 ${fullWidth ? 'col-span-2' : ''}`}>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}15` }}>
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: `${color}15` }}>
             <span style={{ color }}>{icon}</span>
         </div>
         <div className="min-w-0">
@@ -622,16 +622,16 @@ const HubZoneEditScreen = ({ zone, cityZone, onClose, onSave }) => {
     return ReactDOM.createPortal(
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             style={{ position: 'fixed', inset: 0, zIndex: 99999 }} className="bg-gray-50 flex flex-col">
-            <div className="bg-white border-b px-5 py-4 flex items-center gap-4 flex-shrink-0 shadow-sm">
+            <div className="bg-white border-b px-5 py-4 flex items-center gap-4 shrink-0 shadow-sm">
                 <button onClick={onClose} className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200"><ArrowLeft size={20} className="text-gray-700" /></button>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center shadow-sm"><Edit3 size={18} className="text-green-800" /></div>
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-green-50 to-green-100 flex items-center justify-center shadow-sm"><Edit3 size={18} className="text-green-800" /></div>
                 <div className="flex-1"><h2 className="text-lg font-extrabold text-gray-900">Edit Hub Zone</h2><p className="text-xs text-gray-500">{zone.name}</p></div>
                 <span className="px-3 py-1.5 bg-green-50 text-green-800 rounded-full text-xs font-bold border border-green-100">ID #{zone.id}</span>
             </div>
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                <div className="lg:w-[55%] h-64 lg:h-full relative flex-shrink-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                <div className="lg:w-[55%] h-64 lg:h-full relative shrink-0 border-b lg:border-b-0 lg:border-r border-gray-200">
                     <div ref={editMapRef} className="w-full h-full absolute inset-0" />
-                    {showOutsideBanner && <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2.5 text-xs font-bold flex items-center gap-2 z-10 shadow-lg"><AlertTriangle size={16} /> Pin is OUTSIDE the city zone boundary!</div>}
+                    {showOutsideBanner && <div className="absolute top-0 left-0 right-0 bg-linear-to-r from-red-500 to-red-600 text-white px-4 py-2.5 text-xs font-bold flex items-center gap-2 z-10 shadow-lg"><AlertTriangle size={16} /> Pin is OUTSIDE the city zone boundary!</div>}
                     <div className={`absolute ${showOutsideBanner ? 'top-12' : 'top-3'} left-3 z-10`}>
                         <span className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg bg-white/95 backdrop-blur-sm border ${isOutside ? 'text-red-600 border-red-200' : 'text-green-700 border-green-200'}`}>{isOutside ? '🔴 Outside city zone' : '✅ Tap or drag pin'}</span>
                     </div>
@@ -650,7 +650,7 @@ const HubZoneEditScreen = ({ zone, cityZone, onClose, onSave }) => {
                                 <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border shadow-2xl z-30 max-h-64 overflow-y-auto">
                                     {suggestions.map((s, i) => (
                                         <button key={i} onClick={() => selectPlace(s.place_id)} className="w-full px-4 py-3.5 text-left hover:bg-gray-50 flex items-center gap-3 border-b border-gray-50 last:border-0">
-                                            <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"><MapPin size={16} className="text-green-700" /></div>
+                                            <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center shrink-0"><MapPin size={16} className="text-green-700" /></div>
                                             <div className="min-w-0"><p className="text-sm font-bold text-gray-800 truncate">{s.main_text || s.description}</p>{s.secondary_text && <p className="text-xs text-gray-400 truncate mt-0.5">{s.secondary_text}</p>}</div>
                                         </button>
                                     ))}
@@ -659,10 +659,10 @@ const HubZoneEditScreen = ({ zone, cityZone, onClose, onSave }) => {
                         </div>
                     </div>
                     {showOutsideBanner && cityZone?.lat && (
-                        <div className="p-4 bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl flex items-start gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0"><AlertTriangle size={18} className="text-red-600" /></div>
+                        <div className="p-4 bg-linear-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl flex items-start gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center shrink-0"><AlertTriangle size={18} className="text-red-600" /></div>
                             <div className="flex-1"><p className="text-sm font-extrabold text-red-700">Outside City Zone</p><p className="text-xs text-red-600 mt-1">Move the pin inside the blue circle to save changes.</p></div>
-                            <button onClick={resetToCenter} className="px-3.5 py-2 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition-colors flex-shrink-0">Reset</button>
+                            <button onClick={resetToCenter} className="px-3.5 py-2 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition-colors shrink-0">Reset</button>
                         </div>
                     )}
                     <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
@@ -685,7 +685,7 @@ const HubZoneEditScreen = ({ zone, cityZone, onClose, onSave }) => {
                         console.log('BUTTON CLICKED');
                         handleSubmit();
                     }} disabled={isSubmitting || (isOutside && cityZone?.lat)}
-                        className={`w-full py-3.5 rounded-2xl text-white text-sm font-extrabold flex items-center justify-center gap-2.5 shadow-lg transition-all active:scale-[0.98] ${isOutside && cityZone?.lat ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-green-700 to-green-800 hover:from-green-800 hover:to-green-900'} disabled:opacity-60`}>
+                        className={`w-full py-3.5 rounded-2xl text-white text-sm font-extrabold flex items-center justify-center gap-2.5 shadow-lg transition-all active:scale-[0.98] ${isOutside && cityZone?.lat ? 'bg-linear-to-r from-red-500 to-red-600' : 'bg-linear-to-r from-green-700 to-green-800 hover:from-green-800 hover:to-green-900'} disabled:opacity-60`}>
                         {isSubmitting ? <Loader size={20} className="animate-spin" /> : <Save size={20} />}
                         {isOutside && cityZone?.lat ? '⚠ Cannot Save — Outside City Zone' : 'Save Changes'}
                     </button>

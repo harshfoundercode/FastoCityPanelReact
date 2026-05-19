@@ -70,7 +70,7 @@ const SnackbarMessage = ({ message, type, duration, onClose }) => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -50 }}
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border pointer-events-auto min-w-[300px] ${getBgColor()}`}
+        className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border pointer-events-auto min-w-75 ${getBgColor()}`}
       >
         {getIcon()}
         <span className="text-sm font-medium text-gray-700 flex-1">{message}</span>

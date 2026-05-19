@@ -456,7 +456,7 @@ export const ProfileDrawer = ({ isOpen, onClose }) => {
               damping: 28,
               stiffness: 280,
             }}
-            className="fixed right-0 top-0 h-full bg-[#F8FAFC] z-[999] shadow-2xl overflow-hidden"
+            className="fixed right-0 top-0 h-full bg-[#F8FAFC] z-999 shadow-2xl overflow-hidden"
             style={{
               width: "100%",
               maxWidth: "400px",
@@ -464,14 +464,14 @@ export const ProfileDrawer = ({ isOpen, onClose }) => {
           >
             <div className="h-full overflow-y-auto">
               {/* HEADER */}
-              <div className="relative z-10 bg-gradient-to-br from-[#166534] to-[#14532D] px-4 pt-4 pb-4 overflow-hidden">
+              <div className="relative z-10 bg-linear-to-br from-[#166534] to-[#14532D] px-4 pt-4 pb-4 overflow-hidden">
                 {/* Decorative Circles */}
                 <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
 
                 <div className="absolute top-10 right-16 w-20 h-20 rounded-full bg-white/5 pointer-events-none" />
 
                 {/* Close Button */}
-                <div className="flex justify-end relative z-[9999]">
+                <div className="flex justify-end relative z-9999">
                   <button
                     onClick={onClose}
                     className="text-white hover:scale-110 duration-200 cursor-pointer"

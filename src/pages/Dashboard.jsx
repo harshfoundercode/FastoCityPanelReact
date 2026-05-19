@@ -705,7 +705,7 @@ export const Dashboard = () => {
                 </p>
               </div>
               <div
-                className="p-3 rounded-lg flex-shrink-0"
+                className="p-3 rounded-lg shrink-0"
                 style={{ backgroundColor: stat.bgColor }}
               >
                 <div style={{ color: stat.color }}>{stat.icon}</div>
