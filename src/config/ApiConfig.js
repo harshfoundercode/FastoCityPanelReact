@@ -69,32 +69,50 @@ apiClient.interceptors.response.use(
 
 // API Endpoints
 export const ENDPOINTS = {
-  MAP_KEY :"AIzaSyAW2lp2BYRmy8oD3ppvvegrql2MlMa-4tI",
+  MAP_KEY: "AIzaSyAW2lp2BYRmy8oD3ppvvegrql2MlMa-4tI",
   API_URL: API_URL,
 
-  
+
   LOGIN: 'citylogin',
   DASHBOARD: 'dashboard',
-  NOTIFICATIONS: 'city/notifications',
+  NOTIFICATIONS: 'notifications',
   PROFILE: 'cityprofile',
-  ALLHUB:"hub_list",
+  ALLHUB: "hub_list",
   HUB_DETAILS: (hubId) => `hub_details/${hubId}`,
-  HUB_PROFILE: (hubId) => `hubprofile?id=${hubId}`,  
+  HUB_PROFILE: (hubId) => `hubprofile?id=${hubId}`,
   HUB_DETAILS_EDIT: 'hubmanager/update',
   HUB_MANAGER_CREATE: 'hubmanager/create',
 
   HUB_ZONE_LIST: 'hubzone_list',
   HUB_PERFORMANCE: 'performance_hubs',
   HUB_ALL_ORDERS: (hubId) => `hubs/${hubId}/orders`,
-  HUB_ALL_ORDERS_DETAILS: (orderId) => `orders/${orderId}`, 
+  HUB_ALL_ORDERS_DETAILS: (orderId) => `orders/${orderId}`,
 
   ALL_ORDERS: 'orders',
-  ORDER_PROFILE: 'orderprofile', 
+  ORDER_PROFILE: 'orderprofile',
 
   URGENT_MAIN_CATEGORIES: 'main-category-list',
   URGENT_CATEGORIES_BY_MAIN: 'category-fulllist',
   URGENT_ADD_ON_REQUEST: 'cityRequests',
 
+  HUB_REQUESTS: 'request/list',
+  ACCEPT_HUB_REQUEST: 'accept-request',
+
+  CITY_STOCKS: 'cityStock',
+  HUB_LIST: 'hub_list',
+  CITY_REQUEST: 'cityRequests',
+  CITY_TRANSFER_TO_HUB: 'citytransfer-to-hub',
+
+  ADMIN_REQUEST_HISTORY: "cityRequests",
+  HUB_HISTORY: 'cityhub-history',
+
+  ADMIN_INCOMING_STOCK: 'admintransfer_history',
+  ACCEPT_INCOMING_TRANSFER: 'accept_transfer',
+
+  CITY_ZONE_LIST: 'cityzone_list',
+  HUB_ZONE_EDIT: 'hubzone/update',
+  PLACE_AUTOCOMPLETE: 'place_autocomplete',
+  PLACE_DETAILS: 'place_details',
 };
 
 export default apiClient;
