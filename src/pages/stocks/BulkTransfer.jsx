@@ -202,7 +202,7 @@ export const BulkRequest = () => {
   // Empty state
   if (selectedProducts.length === 0) {
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-143">
         <AppHeader title="Stock Transfer" subtitle="Admin request or Hub transfer" />
         <div className="flex-1 flex items-center justify-center">
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center max-w-md mx-4">
@@ -211,7 +211,7 @@ export const BulkRequest = () => {
             </div>
             <h2 className="text-lg font-bold text-gray-800 mb-2">No products selected</h2>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Go to Stock Overview, select products, and then create a transfer request here.
+              Go to Stock, select products, and then create a transfer request here.
             </p>
           </div>
         </div>
@@ -220,7 +220,7 @@ export const BulkRequest = () => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-143">
       <AppHeader title="Stock Transfer" subtitle="Admin request or Hub transfer" />
 
       <div className="flex flex-1 overflow-hidden">

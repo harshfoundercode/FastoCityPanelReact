@@ -144,7 +144,7 @@ export const IncomingStock = () => {
   }, [incomingData, searchQuery, selectedStatus, sortBy]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-143">
       <AppHeader
         title="Admin Incoming Stock"
         subtitle="Track incoming stock from hubs"

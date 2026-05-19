@@ -203,7 +203,7 @@ export const StockHistory = () => {
   const currentStatus = activeTab === 0 ? adminStatus : hubStatus;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-143">
       <AppHeader
         title="History"
         subtitle="Track all your requests and transfers"
