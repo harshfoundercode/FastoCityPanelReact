@@ -22,14 +22,11 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { HubService, HubManagerService, UploadService } from '../../hooks/AddHubMangerViewModel';
-import { useProfileViewModel } from '../../hooks/UserProfileViewModel';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT - FULL WIDTH
 // ─────────────────────────────────────────────────────────────────────────────
 export const AddHubManager = () => {
-  // Profile hook
-  const { profileData, fetchProfile } = useProfileViewModel();
 
   // States
   const [hubZones, setHubZones] = useState([]);
@@ -63,16 +60,25 @@ export const AddHubManager = () => {
   
 
 const loadInitialData = async () => {
-  // Step 1: Profile API call - cityzoneid lena
-  const profile = await fetchProfile();
-  
-  // Profile response se cityzoneid
-  const cityzoneid = profile?.cityzoneid;
-  
-  console.log('City Zone ID from profile:', cityzoneid);
-  
-  // Step 2: cityzoneid ko hub zone list API ke param me dena
-  loadHubZones(cityzoneid);
+  try {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const cityzoneid =
+      userData?.cityzoneid ||
+      userData?.data?.cityzoneid ||
+      userData?.data?.data?.cityzoneid;
+
+    console.log("City Zone ID:", cityzoneid);
+
+    if (!cityzoneid) {
+      toast.error("City zone id not found");
+      return;
+    }
+
+    loadHubZones(cityzoneid);
+  } catch (error) {
+    toast.error("Failed to load city zone");
+  }
 };
 
 const loadHubZones = async (cityzoneid) => {
@@ -453,6 +459,7 @@ const loadHubZones = async (cityzoneid) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormInput
                 label="Email Address"
+                autoComplete="new-email"
                 placeholder="e.g. rahul@example.com"
                 icon={<Mail size={18} />}
                 value={formData.email}
@@ -466,6 +473,7 @@ const loadHubZones = async (cityzoneid) => {
                 <FormInput
                   label="Password"
                   placeholder="Min. 6 characters"
+                  autoComplete="new-password"
                   icon={<Lock size={18} />}
                   value={formData.password}
                   onChange={(v) => handleChange('password', v)}
@@ -580,6 +588,8 @@ const FormInput = ({
   type = 'text',
   maxLength,
   rightIcon,
+  autoComplete,
+
 }) => {
   const getBorderColor = () => {
     if (!touched) return 'border-gray-200';
@@ -604,6 +614,7 @@ const FormInput = ({
         </div>
         <input
           type={type}
+          autoComplete={autoComplete || "off"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}

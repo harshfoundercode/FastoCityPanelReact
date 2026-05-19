@@ -481,7 +481,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { i } from 'framer-motion/client';
-import { useDashboardViewModel } from '../hooks/DashboardViewModel'; 
+import { useDashboardViewModel } from '../hooks/DashboardViewModel';
 
 const Colors = {
   primaryGreen: '#14532D',
@@ -495,11 +495,11 @@ const Colors = {
 
 export const Dashboard = () => {
 
-  const { 
-    dashboardData, 
-    isLoading, 
-    error, 
-    fetchDashboard 
+  const {
+    dashboardData,
+    isLoading,
+    error,
+    fetchDashboard
   } = useDashboardViewModel();
 
   useEffect(() => {
@@ -661,11 +661,11 @@ export const Dashboard = () => {
                 color: Colors.primaryGreen,
               }}
             >
-              {new Date().toLocaleDateString('en-IN', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              {new Date().toLocaleDateString('en-IN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               })}
             </div>
             <motion.button
@@ -763,14 +763,7 @@ export const Dashboard = () => {
             <h2 className="text-lg font-semibold" style={{ color: Colors.textBlack }}>
               Hubs Overview
             </h2>
-            <button
-              onClick={() => navigate('/hubs/all-hubs')}
-              className="text-sm font-medium flex items-center gap-1"
-              style={{ color: Colors.primaryGreen }}
-            >
-              View All Hubs
-              <ChevronRight size={16} />
-            </button>
+
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -793,11 +786,10 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      hub.status === 0 
-                        ? 'bg-green-100 text-green-700' 
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${hub.status === 0
+                        ? 'bg-green-100 text-green-700'
                         : 'bg-red-100 text-red-700'
-                    }`}
+                      }`}
                   >
                     {hub.status === 0 ? 'Active' : 'Inactive'}
                   </span>
@@ -858,7 +850,16 @@ export const Dashboard = () => {
                     className="w-10 h-10 rounded-lg flex items-center justify-center"
                     style={{ backgroundColor: Colors.primaryExtraLightGreen }}
                   >
-                    <DollarSign size={18} style={{ color: Colors.primaryGreen }} />
+                    <span
+                      style={{
+                        color: Colors.primaryGreen,
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        lineHeight: 1,
+                      }}
+                    >
+                      ₹
+                    </span>
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: Colors.textBlack }}>
@@ -891,12 +892,7 @@ export const Dashboard = () => {
             <h2 className="text-lg font-semibold" style={{ color: Colors.textBlack }}>
               Recent Disputes
             </h2>
-            <button
-              className="text-sm font-medium"
-              style={{ color: Colors.primaryGreen }}
-            >
-              View All
-            </button>
+
           </div>
 
           <div className="space-y-3">

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ENDPOINTS } from "../../config/ApiConfig";
+import { createPortal } from "react-dom";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
@@ -11,13 +12,13 @@ const MAP_KEY = ENDPOINTS.MAP_KEY;
 // COLORS
 // ─────────────────────────────────────────────────────────────────────────────
 const Colors = {
-  primaryGreen: '#14532D',
-  primaryLightGreen: '#4ADE80',
-  primaryExtraLightGreen: '#F0FDF4',
-  textBlack: '#1F2937',
-  textGrey1: '#6B7280',
-  containerGrey2: '#F3F4F6',
-  white: '#FFFFFF',
+    primaryGreen: '#14532D',
+    primaryLightGreen: '#4ADE80',
+    primaryExtraLightGreen: '#F0FDF4',
+    textBlack: '#1F2937',
+    textGrey1: '#6B7280',
+    containerGrey2: '#F3F4F6',
+    white: '#FFFFFF',
 };
 
 const getToken = () => localStorage.getItem("token") || "";
@@ -156,41 +157,41 @@ function Snackbar({ message, type, onClose }) {
         const t = setTimeout(onClose, 3500);
         return () => clearTimeout(t);
     }, [message, onClose]);
-    
-    const bgColors = { 
-        error: "#ef4444", 
-        warning: "#f59e0b", 
-        success: Colors.primaryGreen 
+
+    const bgColors = {
+        error: "#ef4444",
+        warning: "#f59e0b",
+        success: Colors.primaryGreen
     };
-    
+
     return (
-        <div style={{ 
-            position: "fixed", 
-            bottom: 24, 
-            left: "50%", 
-            transform: "translateX(-50%)", 
-            zIndex: 99999, 
-            display: "flex", 
-            alignItems: "center", 
-            gap: 12, 
-            padding: "12px 20px", 
-            borderRadius: 14, 
-            background: bgColors[type] || "#374151", 
-            color: Colors.white, 
-            fontSize: 13, 
-            fontWeight: 500, 
-            minWidth: 260, 
-            maxWidth: 420, 
-            boxShadow: "0 8px 32px rgba(0,0,0,0.18)" 
+        <div style={{
+            position: "fixed",
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "12px 20px",
+            borderRadius: 14,
+            background: bgColors[type] || "#374151",
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: 500,
+            minWidth: 260,
+            maxWidth: 420,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)"
         }}>
             <span style={{ flex: 1 }}>{message}</span>
-            <button onClick={onClose} style={{ 
-                background: "none", 
-                border: "none", 
-                color: Colors.white, 
-                cursor: "pointer", 
-                fontSize: 16, 
-                opacity: 0.8 
+            <button onClick={onClose} style={{
+                background: "none",
+                border: "none",
+                color: Colors.white,
+                cursor: "pointer",
+                fontSize: 16,
+                opacity: 0.8
             }}>✕</button>
         </div>
     );
@@ -229,14 +230,14 @@ const IC = {
 };
 
 const Spinner = ({ size = 16, color = Colors.primaryGreen }) => (
-    <div style={{ 
-        width: size, 
-        height: size, 
-        border: `2px solid ${Colors.primaryExtraLightGreen}`, 
-        borderTopColor: color, 
-        borderRadius: "50%", 
-        animation: "spin 0.7s linear infinite", 
-        flexShrink: 0 
+    <div style={{
+        width: size,
+        height: size,
+        border: `2px solid ${Colors.primaryExtraLightGreen}`,
+        borderTopColor: color,
+        borderRadius: "50%",
+        animation: "spin 0.7s linear infinite",
+        flexShrink: 0
     }} />
 );
 
@@ -246,13 +247,13 @@ const Spinner = ({ size = 16, color = Colors.primaryGreen }) => (
 function SectionHeader({ icon, title }) {
     return (
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ 
-                width: 32, 
-                height: 32, 
-                borderRadius: 10, 
-                background: Colors.primaryExtraLightGreen, 
-                display: "flex", 
-                alignItems: "center", 
+            <div style={{
+                width: 32,
+                height: 32,
+                borderRadius: 10,
+                background: Colors.primaryExtraLightGreen,
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
                 border: `1px solid ${Colors.primaryLightGreen}30`
             }}>
@@ -275,30 +276,30 @@ function SectionLabel({ icon, title }) {
 function WarningBox({ color, icon, title, message, btnLabel, onBtn }) {
     const red = color === "red";
     return (
-        <div style={{ 
-            padding: "10px 12px", 
-            borderRadius: 12, 
-            background: red ? "#FEF2F2" : "#FFFBEB", 
-            border: `1px solid ${red ? "#FECACA" : "#FDE68A"}`, 
-            display: "flex", 
-            alignItems: "flex-start", 
-            gap: 8 
+        <div style={{
+            padding: "10px 12px",
+            borderRadius: 12,
+            background: red ? "#FEF2F2" : "#FFFBEB",
+            border: `1px solid ${red ? "#FECACA" : "#FDE68A"}`,
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 8
         }}>
             <Icon d={icon} size={15} color={red ? "#DC2626" : "#D97706"} />
             <div style={{ flex: 1 }}>
                 {title && <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 700, color: red ? "#991B1B" : "#92400E" }}>{title}</p>}
                 <p style={{ margin: 0, fontSize: 11, color: red ? "#991B1B" : "#92400E", lineHeight: 1.4 }}>{message}</p>
             </div>
-            <button onClick={onBtn} style={{ 
-                padding: "4px 10px", 
-                borderRadius: 8, 
-                background: red ? "#FEE2E2" : "#FEF3C7", 
-                border: "none", 
-                fontSize: 11, 
-                fontWeight: 700, 
-                color: red ? "#991B1B" : "#92400E", 
-                cursor: "pointer", 
-                flexShrink: 0 
+            <button onClick={onBtn} style={{
+                padding: "4px 10px",
+                borderRadius: 8,
+                background: red ? "#FEE2E2" : "#FEF3C7",
+                border: "none",
+                fontSize: 11,
+                fontWeight: 700,
+                color: red ? "#991B1B" : "#92400E",
+                cursor: "pointer",
+                flexShrink: 0
             }}>{btnLabel}</button>
         </div>
     );
@@ -306,14 +307,14 @@ function WarningBox({ color, icon, title, message, btnLabel, onBtn }) {
 
 function ReadOnlyTile({ icon, label, value }) {
     return (
-        <div style={{ 
-            padding: "12px 14px", 
-            borderRadius: 12, 
-            background: Colors.primaryExtraLightGreen, 
-            border: `1px solid ${Colors.primaryGreen}20`, 
-            display: "flex", 
-            alignItems: "flex-start", 
-            gap: 10 
+        <div style={{
+            padding: "12px 14px",
+            borderRadius: 12,
+            background: Colors.primaryExtraLightGreen,
+            border: `1px solid ${Colors.primaryGreen}20`,
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10
         }}>
             <Icon d={icon} size={15} color={Colors.primaryGreen} />
             <div style={{ minWidth: 0 }}>
@@ -593,8 +594,23 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
     const G = Colors.primaryGreen;
 
     return (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9000, background: "rgba(0,0,0,0.52)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: "min(98vw,1000px)", height: "min(95vh,700px)", background: Colors.containerGrey2, borderRadius: 20, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
+        // <div style={{ position: "fixed", inset: 0, zIndex: 9000, background: "rgba(0,0,0,0.52)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                zIndex: 999999,
+                background: "rgba(0,0,0,0.55)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 20,
+            }}
+        >
+            <div style={{ width: "100%", maxWidth: "1000px", height: "92vh", background: Colors.containerGrey2, borderRadius: 20, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
 
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px", background: Colors.white, borderBottom: "1px solid #E8ECF0", flexShrink: 0 }}>
@@ -862,8 +878,8 @@ export default function AddHubScreen() {
             {snack && <Snackbar {...snack} onClose={hideSnack} />}
 
             {/* AppBar - Updated */}
-            <div style={{ 
-                background: `linear-gradient(135deg, ${Colors.primaryGreen} 0%, #166534 100%)`, 
+            <div style={{
+                background: `linear-gradient(135deg, ${Colors.primaryGreen} 0%, #166534 100%)`,
                 padding: "16px 20px",
                 position: "relative",
                 overflow: "hidden"
@@ -896,25 +912,25 @@ export default function AddHubScreen() {
             <div style={{ margin: "0 auto", padding: "20px 16px 48px" }}>
 
                 {/* Info banner - Updated */}
-                <div style={{ 
-                    padding: 14, 
-                    borderRadius: 16, 
-                    background: Colors.white, 
-                    border: `1px solid ${Colors.primaryGreen}20`, 
-                    display: "flex", 
-                    alignItems: "flex-start", 
-                    gap: 12, 
+                <div style={{
+                    padding: 14,
+                    borderRadius: 16,
+                    background: Colors.white,
+                    border: `1px solid ${Colors.primaryGreen}20`,
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 12,
                     marginBottom: 24,
                     boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
                 }}>
-                    <div style={{ 
-                        width: 36, 
-                        height: 36, 
-                        borderRadius: 12, 
-                        background: Colors.primaryExtraLightGreen, 
-                        display: "flex", 
-                        alignItems: "center", 
-                        justifyContent: "center", 
+                    <div style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 12,
+                        background: Colors.primaryExtraLightGreen,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         flexShrink: 0,
                         border: `1px solid ${Colors.primaryLightGreen}30`
                     }}>
@@ -928,13 +944,13 @@ export default function AddHubScreen() {
                 {/* Hub Information - Updated */}
                 <div style={{ marginBottom: 24 }}>
                     <SectionHeader icon={IC.store} title="Hub Information" />
-                    <div style={{ 
-                        background: Colors.white, 
-                        borderRadius: 16, 
-                        border: `1px solid ${Colors.primaryGreen}15`, 
-                        padding: 20, 
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.04)", 
-                        marginTop: 12 
+                    <div style={{
+                        background: Colors.white,
+                        borderRadius: 16,
+                        border: `1px solid ${Colors.primaryGreen}15`,
+                        padding: 20,
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                        marginTop: 12
                     }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
                             <Icon d={IC.store} size={13} color={Colors.textGrey1} />
@@ -944,16 +960,16 @@ export default function AddHubScreen() {
                             value={hubName}
                             onChange={e => { setHubName(e.target.value); if (e.target.value) setErrors(er => ({ ...er, hubName: undefined })); }}
                             placeholder="e.g. Hazratganj Hub"
-                            style={{ 
-                                width: "100%", 
-                                boxSizing: "border-box", 
-                                height: 48, 
-                                padding: "0 16px", 
-                                borderRadius: 12, 
-                                border: `2px solid ${errors.hubName ? "#FCA5A5" : Colors.primaryGreen}20`, 
-                                fontSize: 14, 
-                                color: Colors.textBlack, 
-                                background: Colors.containerGrey2, 
+                            style={{
+                                width: "100%",
+                                boxSizing: "border-box",
+                                height: 48,
+                                padding: "0 16px",
+                                borderRadius: 12,
+                                border: `2px solid ${errors.hubName ? "#FCA5A5" : Colors.primaryGreen}20`,
+                                fontSize: 14,
+                                color: Colors.textBlack,
+                                background: Colors.containerGrey2,
                                 outline: "none",
                                 transition: "all 0.2s ease"
                             }}
@@ -975,37 +991,37 @@ export default function AddHubScreen() {
                 {/* Hub Location - Updated */}
                 <div style={{ marginBottom: 32 }}>
                     <SectionHeader icon={IC.pin} title="Hub Location" />
-                    <div style={{ 
-                        background: Colors.white, 
-                        borderRadius: 16, 
-                        border: `1px solid ${Colors.primaryGreen}15`, 
-                        padding: 20, 
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.04)", 
-                        marginTop: 12 
+                    <div style={{
+                        background: Colors.white,
+                        borderRadius: 16,
+                        border: `1px solid ${Colors.primaryGreen}15`,
+                        padding: 20,
+                        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                        marginTop: 12
                     }}>
                         <button onClick={openMap} disabled={dataLoading}
-                            style={{ 
-                                width: "100%", 
-                                padding: "28px 0", 
-                                borderRadius: 14, 
-                                cursor: dataLoading ? "wait" : "pointer", 
-                                background: locationPicked ? Colors.primaryExtraLightGreen : Colors.containerGrey2, 
-                                border: `2px dashed ${errors.location ? "#FCA5A5" : locationPicked ? Colors.primaryGreen + "40" : Colors.primaryGreen + "20"}`, 
-                                display: "flex", 
-                                flexDirection: "column", 
-                                alignItems: "center", 
-                                gap: 12, 
-                                transition: "all 0.25s ease" 
+                            style={{
+                                width: "100%",
+                                padding: "28px 0",
+                                borderRadius: 14,
+                                cursor: dataLoading ? "wait" : "pointer",
+                                background: locationPicked ? Colors.primaryExtraLightGreen : Colors.containerGrey2,
+                                border: `2px dashed ${errors.location ? "#FCA5A5" : locationPicked ? Colors.primaryGreen + "40" : Colors.primaryGreen + "20"}`,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: 12,
+                                transition: "all 0.25s ease"
                             }}>
                             {dataLoading
                                 ? <Spinner size={24} color={G} />
-                                : <div style={{ 
-                                    width: 48, 
-                                    height: 48, 
-                                    borderRadius: "50%", 
-                                    background: locationPicked ? Colors.primaryExtraLightGreen : Colors.white, 
-                                    display: "flex", 
-                                    alignItems: "center", 
+                                : <div style={{
+                                    width: 48,
+                                    height: 48,
+                                    borderRadius: "50%",
+                                    background: locationPicked ? Colors.primaryExtraLightGreen : Colors.white,
+                                    display: "flex",
+                                    alignItems: "center",
                                     justifyContent: "center",
                                     border: `2px solid ${locationPicked ? Colors.primaryGreen + "30" : Colors.primaryGreen + "20"}`
                                 }}>
@@ -1040,20 +1056,20 @@ export default function AddHubScreen() {
 
                 {/* Submit Button - Updated */}
                 <button onClick={handleSubmit} disabled={submitting}
-                    style={{ 
-                        width: "100%", 
-                        height: 54, 
-                        borderRadius: 14, 
-                        border: "none", 
-                        background: submitting ? Colors.primaryGreen : `linear-gradient(135deg, ${Colors.primaryGreen} 0%, #166534 100%)`, 
-                        color: Colors.white, 
-                        fontSize: 15, 
-                        fontWeight: 700, 
-                        cursor: submitting ? "wait" : "pointer", 
-                        display: "flex", 
-                        alignItems: "center", 
-                        justifyContent: "center", 
-                        gap: 10, 
+                    style={{
+                        width: "100%",
+                        height: 54,
+                        borderRadius: 14,
+                        border: "none",
+                        background: submitting ? Colors.primaryGreen : `linear-gradient(135deg, ${Colors.primaryGreen} 0%, #166534 100%)`,
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: 700,
+                        cursor: submitting ? "wait" : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 10,
                         opacity: submitting ? 0.85 : 1,
                         boxShadow: `0 4px 16px ${Colors.primaryGreen}40`,
                         letterSpacing: "0.2px",
@@ -1064,15 +1080,18 @@ export default function AddHubScreen() {
             </div>
 
             {/* Map Picker Popup */}
-            {showMap && cityZone && (
-                <MapPickerPopup
-                    cityZone={cityZone}
-                    existingHubs={existingHubs}
-                    onClose={() => setShowMap(false)}
-                    onConfirm={handleConfirm}
-                    snackShow={showSnack}
-                />
-            )}
+            {showMap &&
+                cityZone &&
+                createPortal(
+                    <MapPickerPopup
+                        cityZone={cityZone}
+                        existingHubs={existingHubs}
+                        onClose={() => setShowMap(false)}
+                        onConfirm={handleConfirm}
+                        snackShow={showSnack}
+                    />,
+                    document.body
+                )}
 
             <style>{`@keyframes spin { to { transform: rotate(360deg); } } * { box-sizing: border-box; }`}</style>
         </div>

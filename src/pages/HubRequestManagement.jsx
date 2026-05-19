@@ -211,7 +211,7 @@ export const HubRequestManagement = () => {
         {/* RIGHT PANEL */}
         <div className="w-[45%] flex flex-col">
           <div className="px-4 py-2.5 bg-blue-50 border-b border-blue-100">
-            <span className="text-blue-700 font-extrabold text-sm">🔍 Request Details</span>
+            <span className="text-blue-700 font-bold text-sm">🔍 Request Details</span>
           </div>
 
           {!selectedRequest ? (
