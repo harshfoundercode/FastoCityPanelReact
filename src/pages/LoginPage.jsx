@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { PremiumBg } from '../components/premiumBg';
-import { useLoginViewModel } from '../hooks/userLoginViewModel';
+import { PremiumBg } from '../components/PremiumBg';
+import { useLoginViewModel } from '../hooks/UserLoginViewModel';
 import AppLogo from '../assets/app_logo.png';
 import toast from 'react-hot-toast';
 

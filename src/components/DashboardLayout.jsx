@@ -20,7 +20,7 @@ import {
   X,
 } from 'lucide-react';
 import AppLogo from '../assets/app_logo.png';
-import { PremiumBg } from '../components/premiumBg';
+import { PremiumBg } from '../components/PremiumBg';
 import toast from 'react-hot-toast';
 import { ProfileDrawer } from '../pages/ProfileDrawer'; // Import ProfileDrawer
 
