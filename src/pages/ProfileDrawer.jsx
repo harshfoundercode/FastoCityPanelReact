@@ -12,7 +12,7 @@ import {
   RefreshCcw,
   Loader,
 } from "lucide-react";
-import { useProfileViewModel } from "../hooks/userProfileViewModel";
+import { useProfileViewModel } from "../hooks/UserProfileViewModel";
 
 export const ProfileDrawer = ({ isOpen, onClose }) => {
   const { profileData, isLoading, error, fetchProfile } = useProfileViewModel();
