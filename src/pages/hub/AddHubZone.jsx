@@ -874,42 +874,26 @@ export default function AddHubScreen() {
     const G = Colors.primaryGreen;
 
     return (
-        <div style={{ minHeight: "100vh", background: Colors.primaryExtraLightGreen, fontFamily: "system-ui, -apple-system, sans-serif" }}>
+        <div style={{ minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
             {snack && <Snackbar {...snack} onClose={hideSnack} />}
 
             {/* AppBar - Updated */}
-            <div style={{
-                background: `linear-gradient(135deg, ${Colors.primaryGreen} 0%, #166534 100%)`,
-                padding: "16px 20px",
-                position: "relative",
-                overflow: "hidden"
-            }}>
-                <div style={{
-                    position: "absolute",
-                    top: -15,
-                    right: -15,
-                    width: 80,
-                    height: 80,
-                    borderRadius: "50%",
-                    background: `${Colors.primaryLightGreen}15`,
-                }} />
-                <div style={{
-                    position: "absolute",
-                    bottom: -25,
-                    left: "30%",
-                    width: 60,
-                    height: 60,
-                    borderRadius: "50%",
-                    background: `${Colors.primaryLightGreen}10`,
-                }} />
-                <div style={{ position: "relative", zIndex: 1 }}>
-                    <p style={{ margin: 0, color: Colors.white, fontWeight: 800, fontSize: 18, letterSpacing: "-0.3px" }}>Create Hub</p>
-                    <p style={{ margin: "3px 0 0", color: `${Colors.primaryLightGreen}CC`, fontSize: 12 }}>Add a new delivery hub</p>
+
+
+
+            <div className="flex items-center justify-between mb-6">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Create Hub</h1>
+                    <p className="text-sm text-gray-500 mt-1">Add a new delivery hub</p>
                 </div>
+                <span className="px-3 py-1.5 bg-green-50 text-green-800 rounded-full text-xs font-semibold flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-600" />
+                    New
+                </span>
             </div>
 
             {/* Body */}
-            <div style={{ margin: "0 auto", padding: "20px 16px 48px" }}>
+            <div style={{ margin: "0 auto", padding: "5px 16px 48px" }}>
 
                 {/* Info banner - Updated */}
                 <div style={{
@@ -919,8 +903,8 @@ export default function AddHubScreen() {
                     border: `1px solid ${Colors.primaryGreen}20`,
                     display: "flex",
                     alignItems: "flex-start",
-                    gap: 12,
-                    marginBottom: 24,
+                    gap: 10,
+                    marginBottom: 18,
                     boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
                 }}>
                     <div style={{
@@ -934,9 +918,9 @@ export default function AddHubScreen() {
                         flexShrink: 0,
                         border: `1px solid ${Colors.primaryLightGreen}30`
                     }}>
-                        <Icon d={IC.info} size={18} color={G} />
+                        <Icon d={IC.info} size={15} color={G} />
                     </div>
-                    <p style={{ margin: 0, fontSize: 13, color: Colors.primaryGreen, lineHeight: 1.5, fontWeight: 500 }}>
+                    <p style={{ margin: 7, fontSize: 13, color: Colors.primaryGreen, lineHeight: 1.5, fontWeight: 500 }}>
                         Fill in the hub details and pick a location on the map to define its coverage area.
                     </p>
                 </div>

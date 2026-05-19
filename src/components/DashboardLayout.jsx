@@ -348,13 +348,11 @@ export const DashboardLayout = () => {
   }, [isActive]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Premium Background - Fixed */}
-     
+    <div className="flex h-screen overflow-hidden bg-gray-50">     
 
       {/* Desktop Sidebar - Fixed position, doesn't reload */}
       <aside 
-        className="hidden md:block flex-shrink-0 relative z-20"
+        className="hidden md:block shrink-0 relative z-20"
         style={{ width: sidebarWidth }}
       >
         <div 
@@ -362,7 +360,6 @@ export const DashboardLayout = () => {
           style={{ 
             width: sidebarWidth,
             backgroundColor: Colors.white,
-            boxShadow: '2px 0 10px rgba(0, 0, 0, 0.1)',
           }}
         >
           <SidebarContent 
@@ -450,7 +447,7 @@ export const DashboardLayout = () => {
         </header>
 
         {/* Page Content - Only this part changes, sidebar stays fixed */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-3">
           <motion.div
             key={location.pathname}
             initial={{ opacity: 0, y: 10 }}

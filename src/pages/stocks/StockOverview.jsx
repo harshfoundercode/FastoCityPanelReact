@@ -78,7 +78,7 @@ export const StockOverview = () => {
         {!stockVM.isLoading && !stockVM.error && stockVM.mainCategories.length > 0 && (
           <>
             {/* Left Panel - Category Tree */}
-            <div className="w-[280px] bg-white border-r border-gray-200 flex-shrink-0 hidden lg:block">
+            <div className="w-70 bg-white border-r border-gray-200 shrink-0 hidden lg:block">
               <CategoryTree />
             </div>
 

@@ -10,8 +10,8 @@ import {
 } from 'lucide-react';
 import { useStockContext } from '../stocks/stockContext';
 
-export const CategoryTree = () => { // ✅ Remove prop
-  const stockVM = useStockContext(); // ✅ Get from context
+export const CategoryTree = () => { 
+  const stockVM = useStockContext();
   
   const [expandedMain, setExpandedMain] = useState(new Set());
   const [expandedCat, setExpandedCat] = useState(new Set());

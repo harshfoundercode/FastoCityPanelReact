@@ -56,7 +56,7 @@ export const HubRequestManagement = () => {
     });
   }, [requests, filter]);
 
-  
+
 
   // Helpers
   const getStatusString = (status) => {
@@ -109,16 +109,12 @@ export const HubRequestManagement = () => {
 
   return (
     <div className="flex flex-col h-full">
-      
+
       {/* Split Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* LEFT PANEL */}
         <div className="w-[55%] flex flex-col border-r border-gray-200">
-          {/* Panel Header */}
-          <div className="px-4 py-2.5 bg-green-50 border-b border-green-100 flex items-center justify-between">
-            <span className="text-green-800 font-bold text-sm">📋 Incoming Requests</span>
-            <span className="text-xs text-gray-500">{filteredRequests.length} requests</span>
-          </div>
+
 
           {/* Filter Bar */}
           <div className="px-3 py-2 bg-white border-b border-gray-200 flex gap-2">
@@ -127,8 +123,8 @@ export const HubRequestManagement = () => {
                 key={key}
                 onClick={() => setFilter(key)}
                 className={`px-3 py-1 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${filter === key
-                    ? 'bg-green-800 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-green-800 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
                 {label}
@@ -322,8 +318,8 @@ const ProductCard = ({ product }) => (
           <span className="text-xs font-bold text-green-800 mr-2">₹{variant.discount_price}</span>
         )}
         <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${(parseInt(variant.current_stock) || 0) > 0
-            ? 'bg-green-50 text-green-700'
-            : 'bg-red-50 text-red-700'
+          ? 'bg-green-50 text-green-700'
+          : 'bg-red-50 text-red-700'
           }`}>
           Stock: {variant.current_stock || 0}
         </span>
