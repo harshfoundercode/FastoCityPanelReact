@@ -21,7 +21,6 @@ export const AdminLoginScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   
-  // Use the login hook
   const {
     email,
     setEmail,
@@ -39,7 +38,6 @@ export const AdminLoginScreen = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Responsive card width matching Flutter logic
   const getCardWidth = () => {
     if (screenWidth < 600) return screenWidth * 0.92;
     if (screenWidth >= 600 && screenWidth < 1100) return screenWidth * 0.55;

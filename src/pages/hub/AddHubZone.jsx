@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ENDPOINTS } from "../../config/ApiConfig";
 import { createPortal } from "react-dom";
+import toast from 'react-hot-toast';
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
@@ -57,13 +59,55 @@ async function fetchHubZoneList(cityzoneid) {
 }
 
 async function createHubZone(payload) {
-    const res = await fetch(`${BASE_URL}hubzone/create`, {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error("Failed to create hub zone");
-    return res.json();
+    try {
+        const res = await fetch(`${BASE_URL}hubzone/create`, {
+            method: "POST",
+            headers: authHeaders(),
+            body: JSON.stringify(payload),
+        });
+        
+        // ✅ Pehle response body parse karo
+        const data = await res.json();
+        
+        // ✅ Success case
+        if (res.ok) {
+            toast.success(data?.message || 'Hub zone created successfully');
+            return { success: true, data };
+        }
+        
+        // ✅ 400 ya other errors - API se message lo
+        const errorMessage = data?.message || data?.error || getErrorMessage(res.status);
+        toast.error(errorMessage);
+        return { success: false, message: errorMessage, status: res.status };
+        
+    } catch (error) {
+        // ✅ Network error ya JSON parse error
+        console.error('Create hub zone error:', error);
+        
+        if (error instanceof TypeError && error.message === 'Failed to fetch') {
+            toast.error('Network error. Please check your connection.');
+        } else if (error instanceof SyntaxError) {
+            toast.error('Invalid server response');
+        } else {
+            toast.error(error.message || 'Failed to create hub zone');
+        }
+        
+        return { success: false, message: error.message };
+    }
+}
+
+// Helper for status codes
+function getErrorMessage(status) {
+    const messages = {
+        400: 'Invalid request. Please check your data.',
+        401: 'Session expired. Please login again.',
+        403: 'You do not have permission.',
+        404: 'API endpoint not found.',
+        409: 'Hub zone already exists.',
+        422: 'Validation error. Check your inputs.',
+        500: 'Server error. Please try again later.',
+    };
+    return messages[status] || `Request failed with status ${status}`;
 }
 
 async function fetchPlaceAutocomplete(query) {
@@ -853,7 +897,7 @@ export default function AddHubScreen() {
         setSubmitting(true);
         try {
             const payload = {
-                cityzoneid,
+                cityzoneid:cityzoneid,
                 name: hubName.trim(),
                 address: locationData.address || "",
                 pincode: locationData.pincode || "",
@@ -861,7 +905,9 @@ export default function AddHubScreen() {
                 lat: locationData.lat.toString(),
                 long: locationData.lng.toString(),
             };
+            console.log("Hub created with payload:", payload);
             await createHubZone(payload);
+        
             showSnack("✅ Hub created successfully!", "success");
             setHubName(""); setLocationPicked(false); setLocationData(null); setErrors({});
         } catch (err) {
