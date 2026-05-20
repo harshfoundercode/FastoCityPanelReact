@@ -20,7 +20,7 @@ const Colors = {
     textBlack: '#1F2937',
     textGrey1: '#6B7280',
     containerGrey2: '#F3F4F6',
-    white: '#FFFFFF',
+    white: '#FFFFFF'
 };
 
 const getToken = () => localStorage.getItem("token") || "";
