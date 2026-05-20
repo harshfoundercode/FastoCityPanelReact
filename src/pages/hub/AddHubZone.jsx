@@ -65,25 +65,25 @@ async function createHubZone(payload) {
             headers: authHeaders(),
             body: JSON.stringify(payload),
         });
-        
+
         // ✅ Pehle response body parse karo
         const data = await res.json();
-        
+
         // ✅ Success case
         if (res.ok) {
             toast.success(data?.message || 'Hub zone created successfully');
             return { success: true, data };
         }
-        
+
         // ✅ 400 ya other errors - API se message lo
         const errorMessage = data?.message || data?.error || getErrorMessage(res.status);
         toast.error(errorMessage);
         return { success: false, message: errorMessage, status: res.status };
-        
+
     } catch (error) {
         // ✅ Network error ya JSON parse error
         console.error('Create hub zone error:', error);
-        
+
         if (error instanceof TypeError && error.message === 'Failed to fetch') {
             toast.error('Network error. Please check your connection.');
         } else if (error instanceof SyntaxError) {
@@ -91,7 +91,7 @@ async function createHubZone(payload) {
         } else {
             toast.error(error.message || 'Failed to create hub zone');
         }
-        
+
         return { success: false, message: error.message };
     }
 }
@@ -468,6 +468,7 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
                 if (isSelectingRef.current) return;
                 let loc = { lat: e.latLng.lat(), lng: e.latLng.lng() };
                 if (!isInsideCity(loc)) {
+
                     snackShow("❌ You can only drag inside the blue zone", "error");
                     loc = clampToCity(loc, cityCenter, cityRadiusKm);
                     hubMarkerRef.current.setPosition({ lat: loc.lat, lng: loc.lng });
@@ -884,6 +885,7 @@ export default function AddHubScreen() {
         setErrors(e => ({ ...e, location: undefined }));
     };
 
+
     const handleSubmit = async () => {
         const e = {};
         if (!hubName.trim()) e.hubName = "Hub name is required";
@@ -892,12 +894,12 @@ export default function AddHubScreen() {
         if (Object.keys(e).length > 0) return;
 
         const cityzoneid = getCityZoneId(cityZone);
-        if (!cityzoneid) { showSnack("City zone ID not found. Please login again.", "error"); return; }
+        if (!cityzoneid) { showSnack("City zone ID not found.", "error"); return; }
 
         setSubmitting(true);
         try {
             const payload = {
-                cityzoneid:cityzoneid,
+                cityzoneid: cityzoneid,
                 name: hubName.trim(),
                 address: locationData.address || "",
                 pincode: locationData.pincode || "",
@@ -905,13 +907,25 @@ export default function AddHubScreen() {
                 lat: locationData.lat.toString(),
                 long: locationData.lng.toString(),
             };
-            console.log("Hub created with payload:", payload);
-            await createHubZone(payload);
-        
-            showSnack("✅ Hub created successfully!", "success");
-            setHubName(""); setLocationPicked(false); setLocationData(null); setErrors({});
+
+            const result = await createHubZone(payload);
+
+            if (result.success) {
+                showSnack("✅ Hub created successfully!", "success");
+                setHubName("");
+                setLocationPicked(false);
+                setLocationData(null);
+                setErrors({});
+
+                // ✅ Navigate to Add Hub Manager screen after 1 second
+                setTimeout(() => {
+                    window.location.href = '/hubs/add-hub-manager';
+                    // Ya agar react-router use kar rahe ho:
+                    // navigate('/hubs/add-hub-manager');
+                }, 1000);
+            }
         } catch (err) {
-            showSnack(err.message || "Failed to create hub. Please try again.", "error");
+            showSnack(err.message || "Failed to create hub.", "error");
         } finally {
             setSubmitting(false);
         }

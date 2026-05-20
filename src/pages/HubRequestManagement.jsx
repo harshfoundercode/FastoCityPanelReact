@@ -47,6 +47,15 @@ export const HubRequestManagement = () => {
     fetchRequests();
   }, [fetchRequests]);
 
+   // Helpers
+  const getStatusString = (status) => {
+    switch (status?.toString()) {
+      case '1': return 'accepted';
+      case '2': return 'rejected';
+      default: return 'pending';
+    }
+  };
+  
   // Filter requests
   const filteredRequests = useMemo(() => {
     if (filter === 'all') return requests;
@@ -58,14 +67,7 @@ export const HubRequestManagement = () => {
 
 
 
-  // Helpers
-  const getStatusString = (status) => {
-    switch (status?.toString()) {
-      case '1': return 'accepted';
-      case '2': return 'rejected';
-      default: return 'pending';
-    }
-  };
+ 
 
   // Counts
   const pendingCount = requests.filter(r => getStatusString(r.status) === 'pending').length;

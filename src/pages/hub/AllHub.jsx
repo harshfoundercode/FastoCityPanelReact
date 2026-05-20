@@ -1,12 +1,12 @@
 // src/pages/hubs/AllHubs.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useNavigate } from 'react-router-dom'; 
 
 import {
   Building2,
   MapPin,
-  Users,
+  Users, 
   Truck,
   Package,
   CheckCircle,
@@ -486,7 +486,7 @@ export const AllHubs = () => {
                         {/* Full Address */}
                         <div className="flex items-start gap-3">
                           <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
                             style={{ backgroundColor: Colors.primaryExtraLightGreen }}
                           >
                             <MapPin size={14} style={{ color: Colors.primaryGreen }} />
@@ -504,7 +504,7 @@ export const AllHubs = () => {
                         {/* Manager Details */}
                         <div className="flex items-start gap-3">
                           <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
                             style={{ backgroundColor: Colors.primaryExtraLightGreen }}
                           >
                             <User size={14} style={{ color: Colors.primaryGreen }} />
@@ -528,7 +528,7 @@ export const AllHubs = () => {
                         {/* Performance Stats */}
                         <div className="flex items-start gap-3">
                           <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
                             style={{ backgroundColor: Colors.primaryExtraLightGreen }}
                           >
                             <TrendingUp size={14} style={{ color: Colors.primaryGreen }} />

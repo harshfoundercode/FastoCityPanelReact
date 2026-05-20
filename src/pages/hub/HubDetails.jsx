@@ -1,88 +1,135 @@
-// src/pages/hubs/HubDetails.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft,
-  MapPin,
-  User,
-  Phone,
-  Building2,
-  TrendingUp,
-  Package,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Truck,
-  AlertCircle,
-  Star,
-  Navigation,
-  RefreshCw,
+  ArrowLeft, MapPin, User, Phone, Mail, Building2, TrendingUp,
+  Package, CheckCircle, XCircle, Clock, Truck, AlertCircle,
+  Star, Navigation, RefreshCw, CreditCard, FileText, Shield,
+  Loader, Copy, Check, ExternalLink, Send, Share2,
 } from 'lucide-react';
 import { useHubDetailsViewModel } from '../../hooks/HubDetailsViewModel';
+import { useEditHubViewModel } from '../../hooks/useHubEditViewModel';
+import toast from 'react-hot-toast';
 
 const Colors = {
   primaryGreen: '#14532D',
   primaryExtraLightGreen: '#F0FDF4',
   textBlack: '#1F2937',
   textGrey1: '#6B7280',
-  containerGrey2: '#F3F4F6',
 };
 
 export const HubDetails = () => {
   const { hubId } = useParams();
   const navigate = useNavigate();
   const { hubDetails, isLoading, error, fetchHubDetails } = useHubDetailsViewModel();
+  const { hubProfile, isLoading: profileLoading, fetchHubProfile } = useEditHubViewModel();
+  
+  // Copy states
+  const [copiedField, setCopiedField] = useState(null);
 
   useEffect(() => {
     if (hubId) {
       fetchHubDetails(hubId);
+      fetchHubProfile(hubId);
     }
-  }, [hubId, fetchHubDetails]);
+  }, [hubId]);
 
-  // Format phone number
-  const formatPhone = (phone) => {
-    if (!phone) return 'N/A';
-    return phone.replace(/(\d{3})(\d{3})(\d{4})/, '+91 $1-$2-$3');
+  // ✅ Copy to clipboard function
+  const copyToClipboard = async (text, fieldName) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(fieldName);
+      toast.success(`${fieldName} copied!`);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedField(fieldName);
+      toast.success(`${fieldName} copied!`);
+      setTimeout(() => setCopiedField(null), 2000);
+    }
   };
 
-  // Loading State
-  if (isLoading) {
+  // ✅ Copy all login details for sharing
+  const copyAllLoginDetails = async () => {
+    const hubUrl = "https://startling-kitsune-c41a2b.netlify.app/";
+    const loginDetails = `🔐 Hub Manager Login Details\n\n` +
+      `🌐 URL: ${hubUrl}\n` +
+      `📧 Email: ${hubProfile?.email || 'N/A'}\n` +
+      `🔑 Password: ${hubProfile?.password || 'N/A'}\n` +
+      `🏢 Hub: ${hubDetails?.hub?.hub_name || 'N/A'}\n` +
+      `👤 Manager: ${hubProfile?.name || 'N/A'}\n\n`
+
+    try {
+      await navigator.clipboard.writeText(loginDetails);
+      toast.success('All login details copied! Ready to share.');
+    } catch (err) {
+      const textArea = document.createElement('textarea');
+      textArea.value = loginDetails;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      toast.success('All login details copied! Ready to share.');
+    }
+  };
+
+  // ✅ Share via WhatsApp
+  const shareViaWhatsApp = () => {
+    const hubUrl = window.location.origin + '/login';
+    const message = `🔐 *Hub Manager Login Details*%0A%0A` +
+      `🌐 *URL:* ${hubUrl}%0A` +
+      `📧 *Email:* ${hubProfile?.email || 'N/A'}%0A` +
+      `🔑 *Password:* ${hubProfile?.password || 'N/A'}%0A` +
+      `🏢 *Hub:* ${hubDetails?.hub?.hub_name || 'N/A'}%0A` +
+      `👤 *Manager:* ${hubProfile?.name || 'N/A'}%0A%0A` +
+      `Powered by City Panel`;
+    
+    window.open(`https://wa.me/?text=${message}`, '_blank');
+  };
+
+  // Format phone
+  const formatPhone = (phone) => {
+    if (!phone) return 'N/A';
+    return phone?.replace(/(\d{3})(\d{3})(\d{4})/, '+91 $1-$2-$3');
+  };
+
+  const formatAadhar = (number) => {
+    if (!number) return 'N/A';
+    const str = String(number);
+    return `XXXX XXXX ${str.slice(-4)}`;
+  };
+
+  // Loading
+  if (isLoading && profileLoading) {
     return (
       <div className="space-y-6 animate-pulse">
         <div className="h-10 w-32 bg-gray-200 rounded-lg" />
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="h-8 bg-gray-200 rounded w-64 mb-4" />
           <div className="grid grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 bg-gray-200 rounded-xl" />
-            ))}
+            {[1, 2, 3].map((i) => (<div key={i} className="h-24 bg-gray-200 rounded-xl" />))}
           </div>
         </div>
       </div>
     );
   }
 
-  // Error State
+  // Error
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
-          <AlertCircle size={32} style={{ color: '#DC2626' }} />
-        </div>
-        <h2 className="text-lg font-semibold mb-2" style={{ color: Colors.textBlack }}>
-          Failed to Load Hub Details
-        </h2>
-        <p className="text-sm mb-4" style={{ color: Colors.textGrey1 }}>
-          {error}
-        </p>
-        <button
-          onClick={() => fetchHubDetails(hubId)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium"
-          style={{ backgroundColor: Colors.primaryGreen }}
-        >
-          <RefreshCw size={16} />
-          Retry
+        <AlertCircle size={32} className="text-red-500 mb-4" />
+        <h2 className="text-lg font-semibold mb-2 text-gray-900">Failed to Load Hub Details</h2>
+        <p className="text-sm mb-4 text-gray-500">{error}</p>
+        <button onClick={() => { fetchHubDetails(hubId); fetchHubProfile(hubId); }}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium bg-green-800">
+          <RefreshCw size={16} /> Retry
         </button>
       </div>
     );
@@ -91,25 +138,14 @@ export const HubDetails = () => {
   if (!hubDetails) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
-      {/* Back Button & Header */}
-      <div className="flex items-center gap-4">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/hubs/all-hubs')}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-50 transition-colors"
-          style={{ color: Colors.textBlack }}
-        >
-          <ArrowLeft size={18} />
-          Back to Hubs
-        </motion.button>
-      </div>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="space-y-6">
+      
+      {/* Back Button */}
+      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+        onClick={() => navigate('/hubs/all-hubs')}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-medium hover:bg-gray-50">
+        <ArrowLeft size={18} /> Back to Hubs
+      </motion.button>
 
       {/* Hub Header */}
       <div className="bg-gradient-to-br from-[#166534] to-[#14532D] rounded-2xl p-6 text-white shadow-lg">
@@ -117,9 +153,7 @@ export const HubDetails = () => {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Building2 size={20} className="text-white/80" />
-              <h1 className="text-2xl font-bold capitalize">
-                {hubDetails.hub?.hub_name}
-              </h1>
+              <h1 className="text-2xl font-bold capitalize">{hubDetails.hub?.hub_name}</h1>
             </div>
             <div className="flex items-center gap-2 text-white/80">
               <MapPin size={16} />
@@ -129,223 +163,194 @@ export const HubDetails = () => {
         </div>
       </div>
 
-      {/* Hub Information & Manager Details */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Hub Information */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-1 h-5 rounded-full bg-green-700" />
-            <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-              Hub Information
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                <Building2 size={18} style={{ color: Colors.primaryGreen }} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">Hub Name</p>
-                <p className="text-sm font-semibold capitalize" style={{ color: Colors.textBlack }}>
-                  {hubDetails.hub?.hub_name}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <Navigation size={18} style={{ color: '#3B82F6' }} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">City</p>
-                <p className="text-sm font-semibold capitalize" style={{ color: Colors.textBlack }}>
-                  {hubDetails.hub?.city_name}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
-                <MapPin size={18} style={{ color: '#F59E0B' }} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">Full Address</p>
-                <p className="text-sm font-semibold" style={{ color: Colors.textBlack }}>
-                  {hubDetails.hub?.address}
-                </p>
-              </div>
+      {/* ✅ Share Actions Bar */}
+      {hubProfile && (
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-3">
+            <Share2 size={18} className="text-green-800" />
+            <span className="text-sm font-bold text-gray-800">Share Login Credentials</span>
+            <div className="flex-1" />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={copyAllLoginDetails}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-50 text-green-800 text-xs font-bold hover:bg-green-100 transition-colors border border-green-200"
+              >
+                <Copy size={14} />
+                Copy All
+              </button>
+              <button
+                onClick={shareViaWhatsApp}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-600 text-white text-xs font-bold hover:bg-green-700 transition-colors"
+              >
+                <Send size={14} />
+                WhatsApp
+              </button>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Manager Details */}
+      {/* Hub Information & Manager Details */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1 h-5 rounded-full bg-green-700" />
-            <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-              Manager Details
-            </h2>
+            <h2 className="text-lg font-bold text-gray-900">Hub Information</h2>
           </div>
-
           <div className="space-y-4">
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
-              <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
-                <User size={24} style={{ color: '#8B5CF6' }} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">Manager Name</p>
-                <p className="text-base font-semibold capitalize" style={{ color: Colors.textBlack }}>
-                  {hubDetails.hub?.manager_name}
-                </p>
-              </div>
-            </div>
+            <InfoRow icon={<Building2 size={18} />} label="Hub Name" value={hubDetails.hub?.hub_name} />
+            <InfoRow icon={<Navigation size={18} />} label="City" value={hubDetails.hub?.city_name} />
+            <InfoRow icon={<MapPin size={18} />} label="Full Address" value={hubDetails.hub?.address} />
+          </div>
+        </div>
 
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
-              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
-                <Phone size={24} style={{ color: Colors.primaryGreen }} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">Phone Number</p>
-                <p className="text-base font-semibold" style={{ color: Colors.textBlack }}>
-                  {formatPhone(hubDetails.hub?.manager_phone)}
-                </p>
-              </div>
-            </div>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-5 rounded-full bg-green-700" />
+            <h2 className="text-lg font-bold text-gray-900">Manager Details</h2>
+          </div>
+          <div className="space-y-4">
+            <InfoRow icon={<User size={18} />} label="Manager Name" value={hubDetails.hub?.manager_name} />
+            <InfoRow icon={<Phone size={18} />} label="Phone" value={formatPhone(hubDetails.hub?.manager_phone)} />
           </div>
         </div>
       </div>
+
+      {/* ✅ Hub Manager Profile with Copy Buttons */}
+      {hubProfile && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-1 h-5 rounded-full bg-green-700" />
+            <h2 className="text-lg font-bold text-gray-900">Hub Manager Profile</h2>
+          </div>
+          
+          {profileLoading ? (
+            <div className="flex justify-center py-8"><Loader size={24} className="animate-spin text-green-800" /></div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Name */}
+              <CopyableInfoRow icon={<User size={18} />} label="Name" value={hubProfile.name} color="#8B5CF6" bg="bg-purple-50" />
+
+              {/* Email with Copy */}
+              <CopyableInfoRow 
+                icon={<Mail size={18} />} label="Email" value={hubProfile.email} color="#3B82F6" bg="bg-blue-50"
+                copyable copyValue={hubProfile.email} fieldName="Email"
+                copied={copiedField === 'Email'} onCopy={copyToClipboard}
+              />
+
+              {/* Phone */}
+              <CopyableInfoRow icon={<Phone size={18} />} label="Phone" value={formatPhone(hubProfile.phone)} color="#14532D" bg="bg-green-50" />
+
+              {/* Password with Copy */}
+              <CopyableInfoRow 
+                icon={<Shield size={18} />} label="Password" value={hubProfile.password || 'N/A'} color="#DC2626" bg="bg-red-50"
+                copyable copyValue={hubProfile.password} fieldName="Password"
+                copied={copiedField === 'Password'} onCopy={copyToClipboard}
+              />
+
+              {/* Address */}
+              <CopyableInfoRow icon={<MapPin size={18} />} label="Address" value={hubProfile.address} color="#F59E0B" bg="bg-orange-50" />
+
+              {/* Aadhar */}
+              <CopyableInfoRow icon={<CreditCard size={18} />} label="Aadhar Number" value={formatAadhar(hubProfile.adharno)} color="#0891B2" bg="bg-cyan-50" />
+
+              {/* PAN */}
+              <CopyableInfoRow icon={<FileText size={18} />} label="PAN Number" value={hubProfile.panno} color="#7C3AED" bg="bg-violet-50" />
+
+              {/* Hub Name */}
+              {hubProfile.hub_details && (
+                <CopyableInfoRow icon={<Building2 size={18} />} label="Hub Name" value={hubProfile.hub_details.hub_name} color="#059669" bg="bg-emerald-50" />
+              )}
+
+              {/* Status */}
+              {hubProfile.hub_details && (
+                <CopyableInfoRow 
+                  icon={<CheckCircle size={18} />} label="Status" 
+                  value={hubProfile.hub_details.status === 0 ? 'Active' : 'Inactive'}
+                  color={hubProfile.hub_details.status === 0 ? '#16A34A' : '#DC2626'}
+                  bg={hubProfile.hub_details.status === 0 ? 'bg-green-50' : 'bg-red-50'}
+                />
+              )}
+            </div>
+          )}
+
+          {/* Performance Stats */}
+          {hubProfile.performance_stats && (
+            <div className="mt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-4 rounded-full bg-green-700" />
+                <h3 className="text-sm font-bold text-gray-900">Performance Stats</h3>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-blue-50 rounded-xl p-3 text-center">
+                  <p className="text-lg font-bold text-gray-900">{hubProfile.performance_stats.managed_orders || '0'}</p>
+                  <p className="text-xs text-gray-500">Managed Orders</p>
+                </div>
+                <div className="bg-purple-50 rounded-xl p-3 text-center">
+                  <p className="text-lg font-bold text-gray-900">{hubProfile.performance_stats.active_staff || '0'}</p>
+                  <p className="text-xs text-gray-500">Active Staff</p>
+                </div>
+                <div className="bg-orange-50 rounded-xl p-3 text-center">
+                  <p className="text-lg font-bold text-gray-900">{hubProfile.performance_stats.punctuality || '0%'}</p>
+                  <p className="text-xs text-gray-500">Punctuality</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Performance Metrics */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-6">
           <div className="w-1 h-5 rounded-full bg-green-700" />
-          <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-            Performance Metrics
-          </h2>
+          <h2 className="text-lg font-bold text-gray-900">Performance Metrics</h2>
         </div>
-
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {/* Total Orders */}
-          <div className="bg-blue-50 rounded-xl p-4 text-center">
-            <Package size={24} className="mx-auto mb-2" style={{ color: '#3B82F6' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.total_orders || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Total Orders</p>
-          </div>
-
-          {/* Completed */}
-          <div className="bg-green-50 rounded-xl p-4 text-center">
-            <CheckCircle size={24} className="mx-auto mb-2" style={{ color: '#10B981' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.completed_deliveries || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Completed</p>
-          </div>
-
-          {/* Cancelled */}
-          <div className="bg-red-50 rounded-xl p-4 text-center">
-            <XCircle size={24} className="mx-auto mb-2" style={{ color: '#DC2626' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.cancelled_orders || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Cancelled</p>
-          </div>
-
-          {/* Success Rate */}
-          <div className="bg-purple-50 rounded-xl p-4 text-center">
-            <TrendingUp size={24} className="mx-auto mb-2" style={{ color: '#8B5CF6' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.success_rate 
-                ? `${hubDetails.performance.success_rate}%` 
-                : 'N/A'}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Success Rate</p>
-          </div>
-
-          {/* Avg Time */}
-          <div className="bg-orange-50 rounded-xl p-4 text-center">
-            <Clock size={24} className="mx-auto mb-2" style={{ color: '#F59E0B' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.avg_delivery_time 
-                ? `${hubDetails.performance.avg_delivery_time}m` 
-                : 'N/A'}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Avg Time</p>
-          </div>
-
-          {/* Cancel Rate */}
-          <div className="bg-pink-50 rounded-xl p-4 text-center">
-            <AlertCircle size={24} className="mx-auto mb-2" style={{ color: '#EC4899' }} />
-            <p className="text-2xl font-bold" style={{ color: Colors.textBlack }}>
-              {hubDetails.performance?.cancellation_rate 
-                ? `${hubDetails.performance.cancellation_rate}%` 
-                : 'N/A'}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Cancel Rate</p>
-          </div>
+          <MetricCard icon={<Package size={24} />} value={hubDetails.performance?.total_orders || 0} label="Total Orders" color="#3B82F6" bg="bg-blue-50" />
+          <MetricCard icon={<CheckCircle size={24} />} value={hubDetails.performance?.completed_deliveries || 0} label="Completed" color="#10B981" bg="bg-green-50" />
+          <MetricCard icon={<XCircle size={24} />} value={hubDetails.performance?.cancelled_orders || 0} label="Cancelled" color="#DC2626" bg="bg-red-50" />
+          <MetricCard icon={<TrendingUp size={24} />} value={hubDetails.performance?.success_rate ? `${hubDetails.performance.success_rate}%` : 'N/A'} label="Success Rate" color="#8B5CF6" bg="bg-purple-50" />
+          <MetricCard icon={<Clock size={24} />} value={hubDetails.performance?.avg_delivery_time ? `${hubDetails.performance.avg_delivery_time}m` : 'N/A'} label="Avg Time" color="#F59E0B" bg="bg-orange-50" />
+          <MetricCard icon={<AlertCircle size={24} />} value={hubDetails.performance?.cancellation_rate ? `${hubDetails.performance.cancellation_rate}%` : 'N/A'} label="Cancel Rate" color="#EC4899" bg="bg-pink-50" />
         </div>
       </div>
 
-      {/* Delivery Boys & Additional Sections */}
+      {/* Delivery Boys */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Delivery Boys */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1 h-5 rounded-full bg-green-700" />
-            <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-              Delivery Boys
-            </h2>
+            <h2 className="text-lg font-bold text-gray-900">Delivery Boys</h2>
           </div>
-
           <div className="flex items-center justify-between p-6 bg-purple-50 rounded-xl">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Truck size={32} style={{ color: '#8B5CF6' }} />
-              </div>
+              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm"><Truck size={32} style={{ color: '#8B5CF6' }} /></div>
               <div>
-                <p className="text-3xl font-bold" style={{ color: Colors.textBlack }}>
-                  {hubDetails.drivers?.total_delivery_boys || 0}
-                </p>
+                <p className="text-3xl font-bold text-gray-900">{hubDetails.drivers?.total_delivery_boys || 0}</p>
                 <p className="text-sm text-gray-500">Total Delivery Boys</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-xl font-bold" style={{ color: Colors.primaryGreen }}>
-                {hubDetails.drivers?.active_boys || 0}
-              </p>
+              <p className="text-xl font-bold text-green-800">{hubDetails.drivers?.active_boys || 0}</p>
               <p className="text-sm text-gray-500">Active Now</p>
             </div>
           </div>
         </div>
 
-        {/* Top Delivery Boys */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1 h-5 rounded-full bg-green-700" />
-            <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-              Top Delivery Boys
-            </h2>
+            <h2 className="text-lg font-bold text-gray-900">Top Delivery Boys</h2>
           </div>
-
-          {hubDetails.top_delivery_boys && hubDetails.top_delivery_boys.length > 0 ? (
+          {hubDetails.top_delivery_boys?.length > 0 ? (
             <div className="space-y-3">
               {hubDetails.top_delivery_boys.map((boy, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-yellow-50"
-                >
-                  <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                    <Star size={18} style={{ color: '#F59E0B' }} />
-                  </div>
+                <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-yellow-50">
+                  <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center"><Star size={18} style={{ color: '#F59E0B' }} /></div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold capitalize" style={{ color: Colors.textBlack }}>
-                      {boy.name || 'Delivery Boy'}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {boy.completed_orders || 0} deliveries completed
-                    </p>
+                    <p className="text-sm font-semibold capitalize text-gray-900">{boy.name || 'Delivery Boy'}</p>
+                    <p className="text-xs text-gray-500">{boy.completed_orders || 0} deliveries completed</p>
                   </div>
                 </div>
               ))}
@@ -360,27 +365,17 @@ export const HubDetails = () => {
       </div>
 
       {/* Recent Disruptions */}
-      {hubDetails.recent_disruptions && hubDetails.recent_disruptions.length > 0 && (
+      {hubDetails.recent_disruptions?.length > 0 && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-1 h-5 rounded-full bg-red-500" />
-            <h2 className="text-lg font-bold" style={{ color: Colors.textBlack }}>
-              Recent Disruptions
-            </h2>
+            <h2 className="text-lg font-bold text-gray-900">Recent Disruptions</h2>
           </div>
-
           <div className="space-y-3">
             {hubDetails.recent_disruptions.map((disruption, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100"
-              >
-                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                  <AlertCircle size={20} style={{ color: '#DC2626' }} />
-                </div>
-                <p className="text-sm font-medium" style={{ color: Colors.textBlack }}>
-                  {disruption.description || 'Disruption reported'}
-                </p>
+              <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100">
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"><AlertCircle size={20} style={{ color: '#DC2626' }} /></div>
+                <p className="text-sm font-medium text-gray-900">{disruption.description || 'Disruption reported'}</p>
               </div>
             ))}
           </div>
@@ -389,3 +384,48 @@ export const HubDetails = () => {
     </motion.div>
   );
 };
+
+// ── Copyable Info Row ─────────────────────────────────────────────────────────
+const CopyableInfoRow = ({ icon, label, value, color, bg, copyable, copyValue, fieldName, copied, onCopy }) => (
+  <div className={`flex items-center gap-3 p-4 rounded-xl ${bg || 'bg-gray-50'} relative group`}>
+    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}20` }}>
+      <span style={{ color }}>{icon}</span>
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-xs text-gray-400">{label}</p>
+      <p className="text-sm font-semibold text-gray-900 truncate">{value || 'N/A'}</p>
+    </div>
+    {copyable && (
+      <button
+        onClick={() => onCopy(copyValue, fieldName)}
+        className={`p-2 rounded-lg transition-all flex-shrink-0 ${
+          copied ? 'bg-green-100 text-green-700' : 'hover:bg-gray-200 text-gray-400 opacity-0 group-hover:opacity-100'
+        }`}
+        title={`Copy ${fieldName}`}
+      >
+        {copied ? <Check size={16} /> : <Copy size={16} />}
+      </button>
+    )}
+  </div>
+);
+
+// ── Simple Info Row ───────────────────────────────────────────────────────────
+const InfoRow = ({ icon, label, value }) => (
+  <div className="flex items-start gap-3">
+    <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0" style={{ color: Colors.primaryGreen }}>
+      {icon}
+    </div>
+    <div>
+      <p className="text-xs text-gray-400">{label}</p>
+      <p className="text-sm font-semibold capitalize text-gray-900">{value || 'N/A'}</p>
+    </div>
+  </div>
+);
+
+const MetricCard = ({ icon, value, label, color, bg }) => (
+  <div className={`${bg} rounded-xl p-4 text-center`}>
+    <div className="mx-auto mb-2" style={{ color }}>{icon}</div>
+    <p className="text-2xl font-bold text-gray-900">{value}</p>
+    <p className="text-xs text-gray-500 mt-1">{label}</p>
+  </div>
+);

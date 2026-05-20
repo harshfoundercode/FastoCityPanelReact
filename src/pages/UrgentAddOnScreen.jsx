@@ -152,7 +152,7 @@ export const UrgentAddOnScreen = () => {
 
     return (
         <div className="flex flex-col h-screen bg-gray-50">
-           
+
 
             {/* Main Content */}
             <div className="flex flex-1 overflow-hidden">
@@ -177,8 +177,8 @@ export const UrgentAddOnScreen = () => {
                                             whileTap={{ scale: 0.95 }}
                                             onClick={() => handleMainCatClick(mc)}
                                             className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-all ${selectedMain?.id === mc.id
-                                                    ? 'bg-green-50 border-green-800 text-green-800'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
+                                                ? 'bg-green-50 border-green-800 text-green-800'
+                                                : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
                                                 }`}
                                         >
                                             {mc.img ? (
@@ -207,12 +207,21 @@ export const UrgentAddOnScreen = () => {
                                                     key={cat.category_id}
                                                     whileTap={{ scale: 0.95 }}
                                                     onClick={() => handleCategoryClick(cat)}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${selectedCategory?.category_id === cat.category_id
-                                                            ? 'bg-amber-500 text-white border-amber-500'
-                                                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                                                    className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${selectedCategory?.category_id === cat.category_id
+                                                        ? 'bg-amber-500 text-white border-amber-500'
+                                                        : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
                                                         }`}
                                                 >
-                                                    {cat.category_name}
+                                                    {cat.category_img ? (
+                                                        <img
+                                                            src={cat.category_img}
+                                                            alt=""
+                                                            className="w-5 h-5 rounded-full object-cover flex-shrink-0"
+                                                        />
+                                                    ) : (
+                                                        <Box size={14} className="flex-shrink-0" />
+                                                    )}
+                                                    <span className="truncate max-w-[120px]">{cat.category_name}</span>
                                                 </motion.button>
                                             ))}
                                         </div>
@@ -235,12 +244,21 @@ export const UrgentAddOnScreen = () => {
                                                     key={sub.subcat_id}
                                                     whileTap={{ scale: 0.95 }}
                                                     onClick={() => handleSubCategoryClick(sub)}
-                                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${selectedSubCategory?.subcat_id === sub.subcat_id
-                                                            ? 'bg-amber-500 text-white border-amber-500'
-                                                            : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                                                    className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${selectedSubCategory?.subcat_id === sub.subcat_id
+                                                        ? 'bg-amber-500 text-white border-amber-500'
+                                                        : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
                                                         }`}
                                                 >
-                                                    {sub.subcat_name}
+                                                    {sub.subcat_img ? (
+                                                        <img
+                                                            src={sub.subcat_img}
+                                                            alt=""
+                                                            className="w-5 h-5 rounded-full object-cover shrink-0"
+                                                        />
+                                                    ) : (
+                                                        <Box size={14} className="shrink-0" />
+                                                    )}
+                                                    <span className="truncate max-w-30">{sub.subcat_name}</span>
                                                 </motion.button>
                                             ))}
                                         </div>
@@ -264,8 +282,8 @@ export const UrgentAddOnScreen = () => {
                                                     whileTap={{ scale: 0.95 }}
                                                     onClick={() => handleProductClick(product)}
                                                     className={`flex items-center gap-2 p-2 rounded-lg border text-left transition-all ${selectedProduct?.product_id === product.product_id
-                                                            ? 'bg-green-50 border-green-800'
-                                                            : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                                                        ? 'bg-green-50 border-green-800'
+                                                        : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                                                         }`}
                                                 >
                                                     {product.product_img ? (
@@ -321,8 +339,8 @@ export const UrgentAddOnScreen = () => {
                                                                 whileTap={{ scale: 0.95 }}
                                                                 onClick={() => handleVariantClick(v)}
                                                                 className={`px-3 py-2 rounded-lg border text-center transition-all ${isSelected
-                                                                        ? 'bg-amber-500 text-white border-amber-500 shadow-md'
-                                                                        : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                                                                    ? 'bg-amber-500 text-white border-amber-500 shadow-md'
+                                                                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                                                                     }`}
                                                             >
                                                                 <p className="text-sm font-extrabold">{v.variant_value}</p>
@@ -453,8 +471,8 @@ export const UrgentAddOnScreen = () => {
                             onClick={confirmOrder}
                             disabled={cart.length === 0 || isSubmitting}
                             className={`w-full py-3 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 transition-all ${cart.length === 0
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    : 'bg-amber-500 text-white shadow-md hover:bg-amber-600'
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-amber-500 text-white shadow-md hover:bg-amber-600'
                                 }`}
                         >
                             {isSubmitting ? (
