@@ -41,6 +41,7 @@ export const HubManagerService = {
         data: response.data?.data,
         message: response.data?.message || 'Manager created successfully',
       };
+
     } catch (error) {
       return {
         success: false,

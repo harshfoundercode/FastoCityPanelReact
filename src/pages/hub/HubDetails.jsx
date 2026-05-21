@@ -522,7 +522,7 @@ export const HubDetails = () => {
   };
 
   const copyAllLoginDetails = async () => {
-    const hubUrl = window.location.origin + '/login';
+    const hubUrl = "https://hub.fastocatz.com";
     const loginDetails = `🔐 Hub Manager Login Details\n\n` +
       `🌐 URL: ${hubUrl}\n` +
       `📧 Email: ${hubProfile?.email || 'N/A'}\n` +
@@ -545,7 +545,7 @@ export const HubDetails = () => {
   };
 
   const shareViaWhatsApp = () => {
-    const hubUrl = window.location.origin + '/login';
+    const hubUrl = "https://hub.fastocatz.com";
     const message = `🔐 *Hub Manager Login Details*%0A%0A` +
       `🌐 *URL:* ${hubUrl}%0A` +
       `📧 *Email:* ${hubProfile?.email || 'N/A'}%0A` +

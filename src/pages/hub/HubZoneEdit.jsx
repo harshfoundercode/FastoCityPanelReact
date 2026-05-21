@@ -76,7 +76,8 @@ export const HubZone = () => {
             const [hubRes, cityRes] = await Promise.all([
                 apiClient.post('hubzone_list', { cityzoneid }),
                 apiClient.get('cityzone_list'),
-            ]);
+            ]); 
+            
 
             const zones = hubRes.data?.data || [];
             const cityData = cityRes.data?.data?.[0] || null;
