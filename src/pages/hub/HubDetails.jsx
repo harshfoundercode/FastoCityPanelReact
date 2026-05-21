@@ -528,8 +528,7 @@ export const HubDetails = () => {
       `📧 Email: ${hubProfile?.email || 'N/A'}\n` +
       `🔑 Password: ${hubProfile?.password || 'N/A'}\n` +
       `🏢 Hub: ${hubDetails?.hub?.hub_name || 'N/A'}\n` +
-      `👤 Manager: ${hubProfile?.name || 'N/A'}\n\n` +
-      `Powered by City Panel`;
+      `👤 Manager: ${hubProfile?.name || 'N/A'}\n\n`;
     try {
       await navigator.clipboard.writeText(loginDetails);
       toast.success('All login details copied!');
@@ -551,8 +550,7 @@ export const HubDetails = () => {
       `📧 *Email:* ${hubProfile?.email || 'N/A'}%0A` +
       `🔑 *Password:* ${hubProfile?.password || 'N/A'}%0A` +
       `🏢 *Hub:* ${hubDetails?.hub?.hub_name || 'N/A'}%0A` +
-      `👤 *Manager:* ${hubProfile?.name || 'N/A'}%0A%0A` +
-      `Powered by City Panel`;
+      `👤 *Manager:* ${hubProfile?.name || 'N/A'}%0A%0A`;
     window.open(`https://wa.me/?text=${message}`, '_blank');
   };
 
