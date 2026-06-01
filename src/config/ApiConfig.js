@@ -1,4 +1,3 @@
-// src/config/api.config.js
 import axios from 'axios';
 
 // Base URLs
@@ -23,6 +22,13 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Log full URL and request data
+    console.log("Request URL:", `${config.baseURL}${config.url}`);
+    console.log("Request Method:", config.method?.toUpperCase());
+    console.log("Request Headers:", config.headers);
+    console.log("Request Data:", config.data);
+    console.log("Request Params:", config.params);
+    
     return config;
   },
   (error) => {
@@ -33,9 +39,19 @@ apiClient.interceptors.request.use(
 // Response interceptor - Handle errors globally
 apiClient.interceptors.response.use(
   (response) => {
+    // Log successful response (optional)
+    console.log("Response URL:", response.config.url);
+    console.log("Response Data:", response.data);
+    console.log("Response Status:", response.status);
     return response;
   },
   (error) => {
+     // Log error details
+    console.error("Error Request URL:", error.config?.url);
+    console.error("Error Request Data:", error.config?.data);
+    console.error("Error Response:", error.response?.data);
+    console.error("Error Status:", error.response?.status);
+    
     if (error.response) {
       // Server responded with error status
       switch (error.response.status) {

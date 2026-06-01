@@ -313,7 +313,7 @@ export const Dashboard = () => {
                       : 'bg-red-100 text-red-700'
                       }`}
                   >
-                    {hub.status === 0 ? 'Active' : 'Inactive'}
+                    {hub.status === 1 ? 'Active' : 'Inactive'}
                   </span>
                 </div>
 
