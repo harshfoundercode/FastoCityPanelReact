@@ -308,7 +308,7 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${hub.status === 0
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${hub.status === 1
                       ? 'bg-green-100 text-green-700'
                       : 'bg-red-100 text-red-700'
                       }`}
