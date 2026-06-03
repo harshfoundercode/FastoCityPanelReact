@@ -150,12 +150,12 @@ export const StockHistory = () => {
     return result;
   }, [adminHistory, searchQuery, adminStatus, sortBy]);
 
-   const getLatestDate = (product) => {
+  const getLatestDate = (product) => {
     if (!product.transfers?.length) return new Date(2000);
     const dates = product.transfers.map(t => new Date(t.created_at || t.createdAt || 0)).filter(d => !isNaN(d));
     return dates.length ? new Date(Math.max(...dates)) : new Date(2000);
   };
-  
+
   // Filter and sort hub data
   const filteredHubData = useMemo(() => {
     if (!hubHistory) return [];
@@ -165,13 +165,13 @@ export const StockHistory = () => {
       const q = searchQuery.toLowerCase();
       result = result.filter(p => {
         return (p.product_name || p.productName || '').toLowerCase().includes(q) ||
-               (p.sku || '').toLowerCase().includes(q) ||
-               (p.brand_name || p.brandName || '').toLowerCase().includes(q);
+          (p.sku || '').toLowerCase().includes(q) ||
+          (p.brand_name || p.brandName || '').toLowerCase().includes(q);
       });
     }
 
     if (hubStatus !== 'All') {
-      result = result.filter(p => 
+      result = result.filter(p =>
         (p.transfers || []).some(t => getHubStatusText(t.status) === hubStatus)
       );
     }
@@ -185,7 +185,7 @@ export const StockHistory = () => {
     return result;
   }, [hubHistory, searchQuery, hubStatus, sortBy]);
 
- 
+
 
   const formatDate = (raw) => {
     try {
@@ -221,9 +221,8 @@ export const StockHistory = () => {
             <button
               key={i}
               onClick={() => setActiveTab(i)}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === i ? 'bg-white text-gray-900 shadow-sm border border-gray-200' : 'text-gray-500'
-              }`}
+              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === i ? 'bg-white text-gray-900 shadow-sm border border-gray-200' : 'text-gray-500'
+                }`}
             >
               {label}
             </button>
@@ -264,11 +263,10 @@ export const StockHistory = () => {
             <button
               key={status}
               onClick={() => activeTab === 0 ? setAdminStatus(status) : setHubStatus(status)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
-                currentStatus === status
-                  ? 'border-green-500 bg-green-50 text-green-800'
-                  : 'border-gray-200 bg-white text-gray-500 hover:bg-gray-50'
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${currentStatus === status
+                ? 'border-green-500 bg-green-50 text-green-800'
+                : 'border-gray-200 bg-white text-gray-500 hover:bg-gray-50'
+                }`}
             >
               {status}
             </button>
@@ -406,13 +404,14 @@ const HubTransferCard = ({ product, statusFilter, getStatusText, getStatusColor,
           <p className="text-sm font-bold text-gray-800 truncate">{product.product_name || product.productName}</p>
           <p className="text-xs text-gray-400">SKU: {product.sku || 'N/A'}</p>
         </div>
-        <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
+        {/* <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">
           {filteredTransfers.length} hubs
-        </span>
+        </span> */}
         <motion.div animate={{ rotate: expanded ? 180 : 0 }}>
           <ChevronDown size={18} className="text-gray-400" />
         </motion.div>
       </div>
+
 
       <AnimatePresence>
         {expanded && filteredTransfers.length > 0 && (
@@ -421,7 +420,7 @@ const HubTransferCard = ({ product, statusFilter, getStatusText, getStatusColor,
               <div key={tIdx} className="border-t border-gray-100 p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <Building2 size={13} className="text-blue-600" />
-                  <span className="text-xs font-semibold text-gray-800">{transfer.hub_name || transfer.hubName} - {transfer.hub_maneger_name || transfer.hubManegerName || 'N/A'}</span>
+                  {/* <span className="text-xs font-semibold text-gray-800">{transfer.hub_name || transfer.hubName} - {transfer.hub_maneger_name || transfer.hubManegerName || 'N/A'}</span> */}
                   <div className="flex-1" />
                   <StatusBadge status={transfer.status} getStatusText={getStatusText} getStatusColor={getStatusColor} />
                 </div>
@@ -433,7 +432,56 @@ const HubTransferCard = ({ product, statusFilter, getStatusText, getStatusColor,
                     {((v.missing_qty || v.missingQty) > 0) && (
                       <QtyChip label="Miss" value={v.missing_qty || v.missingQty} color={Colors.error} />
                     )}
+                    {/* {((v.dispute_qty
+                      || v.dispute_qty
+                    ) > 0) && (
+                        <QtyChip label="Def" value={v.dispute_qty
+                          || v.dispute_qty
+                        } color={Colors.error} />
+                      )} */}
+                    {/* <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center overflow-hidden">
+                      {(product.dispute_image || product.dispute_image) ? (
+                        <img src={product.dispute_image || product.dispute_image} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <Package size={18} className="text-green-800" />
+                      )}
+                    </div> */}
+                    {((v.dispute_qty || 0) > 0) && (
+                      <div className="flex items-center gap-2">
+                        <QtyChip
+                          label="Def"
+                          value={v.dispute_qty}
+                          color={Colors.error}
+                        />
+ {v.dispute_image && (() => {
+                      let images = [];
+
+                      try {
+                        images = JSON.parse(v.dispute_image);
+                      } catch (e) {
+                        images = [v.dispute_image];
+                      }
+
+                      return (
+                        <div className="flex flex-wrap gap-2">
+                          {images.map((img, index) => (
+                            <img
+                              key={index}
+                              src={img}
+                              alt={`Defective Product ${index + 1}`}
+                              className="w-24 h-24 rounded-lg object-cover border border-red-200 shadow-sm cursor-pointer"
+                            />
+                          ))}
+                        </div>
+                      );
+                    })()}
+                        
+                      </div>
+                    )}
+
+                   
                   </div>
+
                 ))}
               </div>
             ))}
@@ -443,7 +491,7 @@ const HubTransferCard = ({ product, statusFilter, getStatusText, getStatusColor,
 
       <div className="px-3 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
         <span className="text-xs text-gray-500">{filteredTransfers.length} transfer(s)</span>
-        <span className="text-xs text-gray-500">{totalSent} total sent</span>
+        {/* <span className="text-xs text-gray-500">{totalSent} total sent</span> */}
       </div>
     </div>
   );

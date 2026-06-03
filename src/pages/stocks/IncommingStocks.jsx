@@ -191,9 +191,8 @@ export const IncomingStock = () => {
               <button
                 key={status}
                 onClick={() => setSelectedStatus(status)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
-                  isActive ? 'border-current' : 'border-gray-200 bg-white text-gray-500 hover:bg-gray-50'
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${isActive ? 'border-current' : 'border-gray-200 bg-white text-gray-500 hover:bg-gray-50'
+                  }`}
                 style={isActive ? { backgroundColor: `${color}18`, color, borderColor: color } : {}}
               >
                 {status}
@@ -428,20 +427,24 @@ const AcceptTransferDialog = ({ transfer, onClose, onSuccess }) => {
     input.onchange = async (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      
+
       updateVariant(key, 'dispute_image', 'loading');
-      
+
+      const CLOUD_NAME = "ddsnwfgaw";
+      const UPLOAD_PRESET = "FastoDriver";
+
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'your_preset');
-        
-        const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud/image/upload', {
+        formData.append('upload_preset', UPLOAD_PRESET);
+
+        const response = await fetch(
+           `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
           method: 'POST',
           body: formData,
         });
         const data = await response.json();
-        
+
         if (data.secure_url) {
           updateVariant(key, 'dispute_image', data.secure_url);
         } else {
@@ -495,7 +498,7 @@ const AcceptTransferDialog = ({ transfer, onClose, onSuccess }) => {
         toast.error(response.data?.message || 'Failed to accept transfer');
       }
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error(error.response?.data?.message || 'Failed to accept transfer');
     } finally {
       setIsSubmitting(false);
     }
@@ -564,7 +567,7 @@ const AcceptTransferDialog = ({ transfer, onClose, onSuccess }) => {
                 const key = `${item.productid}_${variant.variantid}`;
                 const data = variantData[key];
                 if (!data) return null;
-                
+
                 const maxQty = data.maxQty;
                 const receivedQty = data.received_qty;
                 const disputeQty = data.dispute_qty;
@@ -577,7 +580,7 @@ const AcceptTransferDialog = ({ transfer, onClose, onSuccess }) => {
                       <span className="text-xs font-semibold">{data.variantValue || 'Default'}</span>
                       <span className="text-xs text-blue-600 font-semibold">Sent: {maxQty}</span>
                     </div>
-                    
+
                     <div className="grid grid-cols-3 gap-2">
                       {/* Received */}
                       <div className="text-center">

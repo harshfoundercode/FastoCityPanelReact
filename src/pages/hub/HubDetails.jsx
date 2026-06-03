@@ -466,7 +466,7 @@ export const HubDetails = () => {
   // Copy states
   const [copiedField, setCopiedField] = useState(null);
 
-  // ✅ Fetch inventory data
+  // ✅ Fetch inventory data 
   const fetchInventory = useCallback(async () => {
     if (!hubId) return;
     setInventoryLoading(true);
@@ -632,7 +632,7 @@ export const HubDetails = () => {
         </div>
       </div>
 
-      {/* Share Actions Bar */}
+      {/* Share Actions Bar */} 
       {hubProfile && (
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">

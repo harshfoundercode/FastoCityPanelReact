@@ -1,12 +1,13 @@
 // src/pages/hubs/AllHubs.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 import {
   Building2,
   MapPin,
-  Users, 
+  Users,
   Truck,
   Package,
   CheckCircle,
@@ -22,10 +23,12 @@ import {
   Edit,
   RefreshCw,
   Loader,
+  Copy
 } from 'lucide-react';
 import { useHubsViewModel } from '../../hooks/UseAllHubViewModel';
 import { EditHubDrawer } from '../hub/EditHubDetails'; // Add this import
-
+import { useEditHubViewModel } from '../../hooks/useHubEditViewModel';
+import { useHubDetailsViewModel } from '../../hooks/HubDetailsViewModel';
 
 
 // Color constants matching Flutter
@@ -54,6 +57,9 @@ export const AllHubs = () => {
 
   // Use the hubs view model hook
   const { hubsData, isLoading, error, fetchHubs } = useHubsViewModel();
+  const { hubDetails, isLoadings, errors, fetchHubDetails } = useHubDetailsViewModel();
+  const { hubProfile, isLoading: profileLoading, fetchHubProfile } = useEditHubViewModel();
+
 
   const navigate = useNavigate(); // Add this
 
@@ -127,6 +133,8 @@ export const AllHubs = () => {
     if (!phone) return 'N/A';
     return phone.replace(/(\d{3})(\d{3})(\d{4})/, '+91 $1-$2-$3');
   };
+
+
 
   // Loading State
   if (isLoading && !hubsData) {
@@ -523,6 +531,38 @@ export const AllHubs = () => {
                               </p>
                             </div>
                           </div>
+                          
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={async (e) => {
+                              e.stopPropagation();
+
+                              try {
+                                const profile = await fetchHubProfile(hub.hub_id);
+
+                                const loginDetails =
+                                  `🔐 Hub Manager Login Details\n\n` +
+                                  `🌐 URL: https://hub.fastocatz.com\n` +
+                                  `📧 Email: ${profile?.email || hubProfile?.email || 'N/A'}\n` +
+                                  `🔑 Password: ${profile?.password || hubProfile?.password || 'N/A'}\n` +
+                                  `🏢 Hub: ${hub.hub_name || 'N/A'}\n` +
+                                  `👤 Manager: ${hub.manager_name || 'N/A'}\n`;
+
+                                await navigator.clipboard.writeText(loginDetails);
+
+                                toast.success('Login credentials copied!');
+                              } catch (error) {
+                                console.error(error);
+                                toast.error('Failed to copy credentials');
+                              }
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-green-50 text-green-800 text-xs font-bold hover:bg-green-100 transition-colors border border-green-200"
+                          >
+                            <Copy size={14} />
+                            Copy All
+                          </button>
+
+                        </div>
                         </div>
 
                         {/* Performance Stats */}
@@ -555,6 +595,7 @@ export const AllHubs = () => {
                             </div>
                           </div>
                         </div>
+
 
                         {/* Action Buttons */}
                         <div className="flex gap-2 pt-2">

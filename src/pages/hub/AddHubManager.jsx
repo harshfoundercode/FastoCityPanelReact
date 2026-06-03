@@ -22,11 +22,15 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { HubService, HubManagerService, UploadService } from '../../hooks/AddHubMangerViewModel';
+import { useNavigate } from "react-router-dom";
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT - FULL WIDTH
 // ─────────────────────────────────────────────────────────────────────────────
 export const AddHubManager = () => {
+
+  const navigate = useNavigate();
 
   // States
   const [hubZones, setHubZones] = useState([]);
@@ -227,7 +231,9 @@ const loadHubZones = async (cityzoneid) => {
       if (result.success) {
         toast.success('Hub Manager created successfully!');
         resetForm();
+         navigate('/hubs/all-hubs');
       } else {
+       
         toast.error(result.message);
       }
     } catch (error) {
@@ -552,12 +558,12 @@ const loadHubZones = async (cityzoneid) => {
               <h3 className="font-bold text-gray-900 text-center mb-1">Upload Photo</h3>
               <p className="text-xs text-gray-500 text-center mb-4">Choose a source</p>
               
-              <div className="grid grid-cols-2 gap-3">
-                <label className="flex flex-col items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200 cursor-pointer hover:bg-green-100">
+              <div className="grid grid-cols-1 gap-3">
+                {/* <label className="flex flex-col items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200 cursor-pointer hover:bg-green-100">
                   <Camera size={22} className="text-green-800" />
                   <span className="text-sm font-semibold text-green-800">Camera</span>
                   <input type="file" accept="image/*" capture="environment" onChange={handleImagePick} className="hidden" />
-                </label>
+                </label> */}
                 
                 <label className="flex flex-col items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200 cursor-pointer hover:bg-emerald-100">
                   <Image size={22} className="text-emerald-600" />
