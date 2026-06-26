@@ -17,6 +17,8 @@ import { UrgentAddOnScreen } from '../pages/UrgentAddOnScreen';
 import { HubRequestManagement } from '../pages/HubRequestManagement';
 import { CityStocksScreen } from '../pages/stocks/CityStocksScreen';
 import { HubZone } from '../pages/hub/HubZoneEdit';
+import { IncomingStock } from '../pages/stocks/IncommingStocks';
+
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -102,6 +104,8 @@ export const AppRoutes = () => {
         <Route path="city-stocks" element={<CityStocksScreen />} />
 
         
+        <Route path="/incoming-stock" element={<IncomingStock key="incoming" />} />
+
 
         
 

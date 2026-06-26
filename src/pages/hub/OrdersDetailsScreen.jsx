@@ -171,9 +171,9 @@ export const OrderDetails = () => {
                 {statusConfig.icon}
                 {order.status_text || statusConfig.label}
               </span>
-              <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${PAYMENT_STATUS[order.payment_status]?.bg} ${PAYMENT_STATUS[order.payment_status]?.color}`}>
+              {/* <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${PAYMENT_STATUS[order.payment_status]?.bg} ${PAYMENT_STATUS[order.payment_status]?.color}`}>
                 {PAYMENT_STATUS[order.payment_status]?.label || 'Unknown'}
-              </span>
+              </span> */}
             </div>
           </div>
         </div>

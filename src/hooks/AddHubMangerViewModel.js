@@ -36,6 +36,7 @@ export const HubManagerService = {
   createManager: async (managerData) => {
     try {
       const response = await apiClient.post(ENDPOINTS.HUB_MANAGER_CREATE, managerData);
+      
       return {
         success: true,
         data: response.data?.data,

@@ -87,7 +87,7 @@ const tabs = [
   { id: 0, label: 'Stock', icon: Package },
   { id: 1, label: 'Transfer', icon: ArrowLeftRight },
   { id: 2, label: 'History', icon: Clock },
-  { id: 3, label: 'Incoming', icon: Truck },
+  // { id: 3, label: 'Incoming', icon: Truck },
 ];
 
 export const CityStocksScreen = () => {
@@ -97,7 +97,7 @@ export const CityStocksScreen = () => {
     <StockOverview key="stock" />,
     <BulkRequest key="transfer" />,
     <StockHistory key="history" />,
-    <IncomingStock key="incoming" />,
+    // <IncomingStock key="incoming" />,
   ];
 
   return (

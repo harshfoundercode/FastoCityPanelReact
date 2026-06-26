@@ -486,8 +486,9 @@ import {
   Users,
   Menu,
   X,
-  AlertTriangle,
+  AlertTriangle, ArrowLeftRight, Clock, Truck, Inbox 
 } from 'lucide-react';
+
 import AppLogo from '../assets/app_logo.png';
 import toast from 'react-hot-toast';
 import { ProfileDrawer } from '../pages/ProfileDrawer';
@@ -536,6 +537,9 @@ const menuItems = [
   },
   {
     id: 'hub-inventory-request', label: 'Hub Inventory Request', icon: <ClipboardList size={20} />, path: '/hub-inventory-request', isExpandable: false,
+  },
+   {
+    id: 'incoming-stock', label: 'Incoming Stock', icon: <Truck size={20} />, path: '/incoming-stock', isExpandable: false, // Add this line
   },
 ];
 
