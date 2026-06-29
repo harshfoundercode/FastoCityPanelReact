@@ -76,8 +76,9 @@
 //               }}
 //               placeholder="Enter reason for rejecting this request..."
 //               rows={4}
-//               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none resize-none ${error ? 'border-red-500' : 'border-gray-300'
-//                 }`}
+//               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none resize-none ${
+//                 error ? 'border-red-500' : 'border-gray-300'
+//               }`}
 //             />
 //             {error && (
 //               <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
@@ -116,7 +117,7 @@
 //   );
 // };
 
-
+// // ── Main Component ─────────────────────────────────────────────────────────────
 // export const HubRequestManagement = () => {
 //   const {
 //     requests,
@@ -377,6 +378,15 @@
 //     return Object.values(transferQuantities).reduce((sum, qty) => sum + qty, 0);
 //   };
 
+//   // Handle reject with reason
+//   const handleReject = async (requestId, rejectReason) => {
+//     const success = await rejectRequest(requestId, rejectReason);
+//     if (success) {
+//       setShowRejectModal(false);
+//       setRejectingRequestId(null);
+//     }
+//   };
+
 //   // Loading state
 //   if (isLoading && !requests.length) {
 //     return (
@@ -391,9 +401,6 @@
 
 //   return (
 //     <div className="flex flex-col h-full bg-gray-50">
-//       {/* Header with stats */}
-
-
 //       {/* Split Layout */}
 //       <div className="flex flex-1 overflow-hidden">
 //         {/* LEFT PANEL - Requests List */}
@@ -406,8 +413,8 @@
 //                   key={key}
 //                   onClick={() => setFilter(key)}
 //                   className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${filter === key
-//                     ? 'bg-green-800 text-white shadow-sm'
-//                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+//                       ? 'bg-green-800 text-white shadow-sm'
+//                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
 //                     }`}
 //                 >
 //                   {label}
@@ -456,8 +463,8 @@
 //                         exit={{ opacity: 0, scale: 0.95 }}
 //                         onClick={() => setSelectedRequest(req)}
 //                         className={`rounded-xl border-2 p-4 cursor-pointer transition-all ${isSelected
-//                           ? 'border-green-800 bg-green-50/30 shadow-lg'
-//                           : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+//                             ? 'border-green-800 bg-green-50/30 shadow-lg'
+//                             : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
 //                           }`}
 //                       >
 //                         {/* Header */}
@@ -797,14 +804,14 @@
 //                       </div>
 //                       <div className="mt-2 flex gap-2 text-xs">
 //                         <span className={`px-2 py-1 rounded font-semibold ${(parseInt(variant.avail_city_stock) || 0) > 0
-//                           ? 'bg-green-50 text-green-700'
-//                           : 'bg-red-50 text-red-700'
+//                             ? 'bg-green-50 text-green-700'
+//                             : 'bg-red-50 text-red-700'
 //                           }`}>
 //                           City: {variant.avail_city_stock || 0}
 //                         </span>
 //                         <span className={`px-2 py-1 rounded font-semibold ${(parseInt(variant.avail_hub_stock) || 0) > 0
-//                           ? 'bg-green-50 text-green-700'
-//                           : 'bg-red-50 text-red-700'
+//                             ? 'bg-green-50 text-green-700'
+//                             : 'bg-red-50 text-red-700'
 //                           }`}>
 //                           Hub: {variant.avail_hub_stock || 0}
 //                         </span>
@@ -1186,6 +1193,7 @@ import {
   Minus,
   Plus,
   Edit2,
+  Check,
 } from 'lucide-react';
 import { useHubRequestViewModel } from '../hooks/useHubRequestViewModel';
 import toast from 'react-hot-toast';
@@ -1195,6 +1203,7 @@ const FILTERS = {
   pending: 'Pending',
   accepted: 'Accepted',
   rejected: 'Rejected',
+  completed: 'Completed',
 };
 
 // ── Reject Modal Component ─────────────────────────────────────────────────────
@@ -1315,6 +1324,7 @@ export const HubRequestManagement = () => {
     switch (status?.toString()) {
       case '1': return 'accepted';
       case '2': return 'rejected';
+      case '3': return 'completed';
       default: return 'pending';
     }
   };
@@ -1331,6 +1341,7 @@ export const HubRequestManagement = () => {
     pending: requests.filter(r => getStatusString(r.status) === 'pending').length,
     accepted: requests.filter(r => getStatusString(r.status) === 'accepted').length,
     rejected: requests.filter(r => getStatusString(r.status) === 'rejected').length,
+    completed: requests.filter(r => getStatusString(r.status) === 'completed').length,
     total: requests.length,
   }), [requests]);
 
@@ -1339,9 +1350,9 @@ export const HubRequestManagement = () => {
     switch (s) {
       case 'accepted':
         return {
-          color: 'text-green-700',
-          bg: 'bg-green-50',
-          border: 'border-green-300',
+          color: 'text-blue-700',
+          bg: 'bg-blue-50',
+          border: 'border-blue-300',
           label: 'Accepted',
           icon: CheckCircle
         };
@@ -1352,6 +1363,14 @@ export const HubRequestManagement = () => {
           border: 'border-red-300',
           label: 'Rejected',
           icon: XCircle
+        };
+      case 'completed':
+        return {
+          color: 'text-green-700',
+          bg: 'bg-green-50',
+          border: 'border-green-300',
+          label: 'Completed',
+          icon: Check
         };
       default:
         return {
@@ -2011,6 +2030,7 @@ const ActionFooter = ({ request, isAccepting, isRejecting, onAccept, onReject, o
   const status = request?.status?.toString();
   const isPending = status === '0' || !status || status === undefined;
   const isAccepted = status === '1';
+  const isCompleted = status === '3';
 
   // Show transfer button for accepted requests
   if (isAccepted) {
@@ -2028,6 +2048,19 @@ const ActionFooter = ({ request, isAccepting, isRejecting, onAccept, onReject, o
         <p className="text-xs text-gray-400 text-center mt-3">
           Click to transfer stock (you can adjust quantities)
         </p>
+      </div>
+    );
+  }
+
+  // Show completed status
+  if (isCompleted) {
+    return (
+      <div className="mx-5 mb-5 p-4 rounded-xl bg-green-50 border border-green-200 flex items-center gap-3">
+        <Check size={22} className="text-green-700" />
+        <div>
+          <p className="text-sm font-bold text-gray-800">Request Completed</p>
+          <p className="text-xs text-gray-500 mt-0.5">This request has been completed successfully.</p>
+        </div>
       </div>
     );
   }
