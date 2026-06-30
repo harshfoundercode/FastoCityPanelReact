@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Base URLs
 // const BASE_URL = 'https://root.fastocatz.com/';
-const BASE_URL = 'https://fasto.honeywithmoon.com/';
+const BASE_URL = 'https://root.fastocatz.com/';
+
 const API_URL = `${BASE_URL}api/`;
 
 // Create axios instance with default config
