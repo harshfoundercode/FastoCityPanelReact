@@ -18,6 +18,7 @@ import { HubRequestManagement } from '../pages/HubRequestManagement';
 import { CityStocksScreen } from '../pages/stocks/CityStocksScreen';
 import { HubZone } from '../pages/hub/HubZoneEdit';
 import { IncomingStock } from '../pages/stocks/IncommingStocks';
+import { BulkRequest } from '../pages/stocks/BulkTransfer';
 
 
 // Protected Route Component
@@ -105,6 +106,7 @@ export const AppRoutes = () => {
 
         
         <Route path="/incoming-stock" element={<IncomingStock key="incoming" />} />
+        <Route path="/transfer" element={<BulkRequest key="transfer" />} />
 
 
         

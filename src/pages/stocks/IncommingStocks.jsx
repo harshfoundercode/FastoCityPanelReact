@@ -1545,6 +1545,7 @@ export const IncomingStock = () => {
     if (s === 0) return 'Pending';
     if (s === 1) return 'Accepted';
     if (s === 2) return 'Completed';
+    if (s === 3) return 'Rejected';
     return 'Unknown';
   };
 
@@ -1553,6 +1554,7 @@ export const IncomingStock = () => {
     if (s === 0) return Colors.warn;
     if (s === 1) return Colors.success;
     if (s === 2) return Colors.primaryGreen;
+    if (s === 3) return Colors.error;
     return Colors.textGrey;
   };
 

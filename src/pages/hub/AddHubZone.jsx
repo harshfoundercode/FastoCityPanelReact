@@ -241,9 +241,18 @@ function Snackbar({ message, type, onClose }) {
     );
 }
 
+// function useSnackbar() {
+//     const [snack, setSnack] = useState(null);
+//     const show = useCallback((message, type = "error") => setSnack({ message, type, key: Date.now() }), []);
+//     const hide = useCallback(() => setSnack(null), []);
+//     return { snack, show, hide };
+// }
 function useSnackbar() {
     const [snack, setSnack] = useState(null);
-    const show = useCallback((message, type = "error") => setSnack({ message, type, key: Date.now() }), []);
+    const show = useCallback((message, type = "error") => {
+        // Remove key from here
+        setSnack({ message, type });
+    }, []);
     const hide = useCallback(() => setSnack(null), []);
     return { snack, show, hide };
 }
@@ -935,7 +944,9 @@ export default function AddHubScreen() {
 
     return (
         <div style={{ minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-            {snack && <Snackbar {...snack} onClose={hideSnack} />}
+            {/* {snack && <Snackbar {...snack} onClose={hideSnack} />} */}
+                        {snack && <Snackbar key={Date.now()} {...snack} onClose={hideSnack} />}
+
 
             {/* AppBar - Updated */}
 

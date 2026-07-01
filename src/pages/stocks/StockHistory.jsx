@@ -121,8 +121,8 @@ export const StockHistory = () => {
     const s = parseInt(status);
     if (s === 0) return 'Pending';
     if (s === 1) return 'Received';
-    if (s === 2) return 'Rejected';
-    if (s === 3) return 'Completed';
+    if (s === 2) return 'Complete';
+    if (s === 3) return 'Rejected';
     return 'Unknown';
   };
 
@@ -130,8 +130,8 @@ export const StockHistory = () => {
     const s = parseInt(status);
     if (s === 0) return Colors.warn;
     if (s === 1) return Colors.success;
-    if (s === 2) return Colors.info;
-    if (s === 3) return Colors.primaryGreen;
+    if (s === 3) return Colors.info;
+    if (s === 2) return Colors.primaryGreen;
     return Colors.textGrey;
   };
 
