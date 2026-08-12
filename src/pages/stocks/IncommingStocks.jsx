@@ -1851,7 +1851,7 @@ const VariantRow = ({ variant }) => {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-2.5">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-semibold text-gray-800">{variant.value || 'Default'}</span>
+        <span className="text-xs font-semibold text-gray-800">{variant.value || 'Default'} {variant.attribute_name}</span>
         <div className="text-right">
           {variant.discount_price || variant.discountPrice ? (
             <>

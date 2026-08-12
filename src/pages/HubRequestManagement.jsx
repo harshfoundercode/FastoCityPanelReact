@@ -2250,7 +2250,7 @@ const TransferModal = ({
                       <div key={vIdx} className="bg-white rounded-lg border border-gray-200 p-3">
                         <div className="flex items-center justify-between mb-3">
                           <div>
-                            <p className="font-semibold text-gray-800">{variant.variant_value || 'Default'}</p>
+                            <p className="font-semibold text-gray-800">{variant.variant_value || 'Default'} {v.attribute_name}</p>
                             {variant.sku && (
                               <p className="text-xs text-gray-400">SKU: {variant.sku}</p>
                             )}

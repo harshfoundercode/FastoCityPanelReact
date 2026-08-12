@@ -666,7 +666,7 @@ export const BulkRequest = () => {
                             <div className="flex items-center justify-between">
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-gray-800">
-                                  {variant.value || variant.variant_value || 'Default'}
+                                  {variant.value || variant.variant_value || 'Default'} {variant.attribute_name}
                                 </p>
                                 <div className="flex items-center gap-2 mt-1">
                                   <span

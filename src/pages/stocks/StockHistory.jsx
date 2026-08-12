@@ -418,7 +418,7 @@ const AdminRequestCard = ({ item, getStatusText, getStatusColor, getStatusIcon, 
                     <div key={vIdx} className="mt-2 ml-8 p-2 bg-gray-50 rounded-lg flex items-center gap-3">
                       {(v.variant_img || v.variantImg) && <img src={v.variant_img || v.variantImg} alt="" className="w-7 h-7 rounded object-cover" />}
                       <div className="flex-1">
-                        <p className="text-xs font-semibold">{v.variant_value || v.variantValue}</p>
+                        <p className="text-xs font-semibold">{v.variant_value || v.variantValue} {v.attribute_name}</p>
                         <p className="text-xs text-gray-400">SKU: {v.sku || 'N/A'}</p>
                       </div>
                       <div className="text-right">
@@ -643,7 +643,7 @@ const HubTransferCard = ({ item, getStatusText, getStatusColor, getStatusIcon, f
                                 <React.Fragment key={v.variant_id || vIdx}>
                                   <tr className="border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
                                     <td className="py-2.5 px-3">
-                                      <p className="font-bold text-gray-800 text-xs">{v.value}</p>
+                                      <p className="font-bold text-gray-800 text-xs">{v.value} {v.attribute_name}</p>
                                     </td>
                                     <td className="py-2.5 px-3 text-center">
                                       <div>

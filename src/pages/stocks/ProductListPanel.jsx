@@ -580,7 +580,7 @@ export const ProductListPanel = () => {
                                   <div className="w-0.5 h-8 rounded mr-2.5" style={{ backgroundColor: vStatusColor }} />
                                   <div className="flex-1 min-w-0">
                                     <p className="text-xs font-medium text-gray-800">
-                                      {variant.value || variant.variant_value || 'Default'}
+                                      {variant.value || variant.variant_value || 'Default'} {variant.attribute_name}
                                     </p>
                                     <div className="flex items-center gap-2 mt-0.5">
                                       {hasDiscount ? (

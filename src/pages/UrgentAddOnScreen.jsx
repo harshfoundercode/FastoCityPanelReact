@@ -374,7 +374,7 @@ export const UrgentAddOnScreen = () => {
                                                                     : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                                                                     }`}
                                                             >
-                                                                <p className="text-sm font-extrabold">{v.variant_value}</p>
+                                                                <p className="text-sm font-extrabold">{v.variant_value} {v.attribute_name}</p>
                                                                 <div className="mt-1">
                                                                     {dPrice && dPrice < price ? (
                                                                         <div className="flex items-center gap-1 justify-center">
