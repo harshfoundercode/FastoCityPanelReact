@@ -1961,7 +1961,7 @@ const ProductCard = ({ product }) => {
                     {/* Variant Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-base font-bold text-gray-800">{variant.variant_value}</p>
+                        <p className="text-base font-bold text-gray-800">{variant.variant_value} {variant.attribute_name}</p>
                         {variant.sku && (
                           <span className="text-xs text-gray-400 font-mono">SKU: {variant.sku}</span>
                         )}

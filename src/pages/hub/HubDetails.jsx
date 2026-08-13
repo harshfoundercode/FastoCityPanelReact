@@ -788,7 +788,7 @@ export const HubDetails = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <p className="text-xs font-semibold text-gray-800">{variant.variant_value}</p>
+                                    <p className="text-xs font-semibold text-gray-800">{variant.variant_value} {variant.attribute_name}</p>
                                     <span className="text-xs text-gray-400">SKU: {variant.sku}</span>
                                   </div>
                                   <div className="flex items-center gap-2 mt-0.5">
