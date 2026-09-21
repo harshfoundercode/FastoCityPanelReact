@@ -208,13 +208,13 @@ function Snackbar({ message, type, onClose }) {
         success: Colors.primaryGreen
     };
 
-    return (
+    return createPortal(
         <div style={{
             position: "fixed",
             bottom: 24,
             left: "50%",
             transform: "translateX(-50%)",
-            zIndex: 99999,
+            zIndex: 1000002,
             display: "flex",
             alignItems: "center",
             gap: 12,
@@ -237,7 +237,8 @@ function Snackbar({ message, type, onClose }) {
                 fontSize: 16,
                 opacity: 0.8
             }}>✕</button>
-        </div>
+        </div>,
+        document.body
     );
 }
 
@@ -390,6 +391,7 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
     const isSelectingRef = useRef(false);
     const debounceRef = useRef(null);
     const mapInitRef = useRef(false);
+    const addressRequestRef = useRef(0);
 
     const cityCenter = { lat: parseFloat(cityZone.lat), lng: parseFloat(cityZone.long) };
     const cityRadiusKm = parseFloat(cityZone.radiuskm) || 10;
@@ -408,6 +410,8 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
     const [addrLoading, setAddrLoading] = useState(false);
     const [addrData, setAddrData] = useState({ street: "", city: "", state: "", pincode: "", fullAddress: "" });
     const [mapReady, setMapReady] = useState(false);
+    const [locationLoading, setLocationLoading] = useState(true);
+    const [locationError, setLocationError] = useState("");
 
     const isInsideCity = useCallback((p) => distanceKm(p, cityCenter) <= cityRadiusKm, []);
     const isHubFullyInside = useCallback((c, r) => distanceKm(c, cityCenter) + r <= cityRadiusKm, []);
@@ -419,13 +423,53 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
         }), [existingHubs]);
 
     const doFetchAddress = useCallback(async (loc) => {
+        const requestId = ++addressRequestRef.current;
         setAddrLoading(true);
         try {
             const data = await reverseGeocode(loc.lat, loc.lng);
-            setAddrData(data);
-        } catch { setAddrData({ street: "", city: "", state: "", pincode: "", fullAddress: "" }); }
-        finally { setAddrLoading(false); }
+            if (requestId === addressRequestRef.current) setAddrData(data);
+        } catch {
+            if (requestId === addressRequestRef.current) {
+                setAddrData({ street: "", city: "", state: "", pincode: "", fullAddress: "" });
+            }
+        } finally {
+            if (requestId === addressRequestRef.current) setAddrLoading(false);
+        }
     }, []);
+
+    const requestCurrentLocation = useCallback((map) => {
+        setLocationLoading(true);
+        setLocationError("");
+
+        if (!navigator.geolocation) {
+            setLocationError("Location access is not supported by this browser.");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            ({ coords }) => {
+                const currentLoc = { lat: coords.latitude, lng: coords.longitude };
+                setLocationLoading(false);
+
+                if (!isInsideCity(currentLoc)) return;
+
+                setSelLoc(currentLoc);
+                setIsOutside(false);
+                setSearchResultOutside(false);
+                map.panTo(currentLoc);
+                map.setZoom(14);
+                doFetchAddress(currentLoc);
+            },
+            (error) => {
+                setLocationError(
+                    error.code === 1
+                        ? "Please allow location access in your browser to continue."
+                        : "Unable to detect your location. Please try again."
+                );
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    }, [doFetchAddress, isInsideCity]);
 
     useEffect(() => {
         const initMap = () => {
@@ -506,6 +550,7 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
             gmapRef.current = map;
             setMapReady(true);
             doFetchAddress(cityCenter);
+            requestCurrentLocation(map);
         };
 
         if (window.google?.maps) { initMap(); return; }
@@ -580,6 +625,7 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
                 setSearchResultOutside(true);
                 setOutsideMsg(`This place is outside the city zone "${cityZone.name}". Only locations inside the blue circle are allowed.`);
                 gmapRef.current?.panTo({ lat: parsedLoc.lat, lng: parsedLoc.lng });
+                await doFetchAddress(parsedLoc);
                 return;
             }
             if (checkOverlap(parsedLoc, hubRadius)) { snackShow("This location overlaps an existing hub zone!", "error"); return; }
@@ -685,7 +731,47 @@ function MapPickerPopup({ cityZone, existingHubs, onClose, onConfirm, snackShow 
                 </div>
 
                 {/* Body */}
-                <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+                <div style={{ display: "flex", flex: 1, minHeight: 0, position: "relative" }}>
+                    {locationLoading && (
+                        <div style={{
+                            position: "absolute",
+                            inset: 0,
+                            zIndex: 100,
+                            background: "rgba(255,255,255,0.94)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            gap: 12,
+                            padding: 24,
+                            textAlign: "center"
+                        }}>
+                            <Spinner size={30} color={G} />
+                            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: Colors.textBlack }}>
+                                {locationError ? "Location access required" : "Detecting your current location..."}
+                            </p>
+                            <p style={{ margin: 0, maxWidth: 340, fontSize: 12, lineHeight: 1.5, color: Colors.textGrey1 }}>
+                                {locationError || "Please allow location access to select the hub location."}
+                            </p>
+                            {locationError && (
+                                <button
+                                    onClick={() => requestCurrentLocation(gmapRef.current)}
+                                    style={{
+                                        padding: "8px 16px",
+                                        border: "none",
+                                        borderRadius: 10,
+                                        background: G,
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: 700,
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    Try Again
+                                </button>
+                            )}
+                        </div>
+                    )}
                     <div style={{ flex: 6, position: "relative" }}>
                         <div ref={mapDivRef} style={{ width: "100%", height: "100%" }} />
 
@@ -945,7 +1031,7 @@ export default function AddHubScreen() {
     return (
         <div style={{ minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
             {/* {snack && <Snackbar {...snack} onClose={hideSnack} />} */}
-                        {snack && <Snackbar key={Date.now()} {...snack} onClose={hideSnack} />}
+                        {snack && <Snackbar {...snack} onClose={hideSnack} />}
 
 
             {/* AppBar - Updated */}
